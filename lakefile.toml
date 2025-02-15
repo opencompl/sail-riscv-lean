@@ -1,0 +1,9 @@
+name = "Lean_RV64D_LEAN"
+defaultTargets = ["LeanRV64DLEAN"]
+
+[[lean_lib]]
+name = "LeanRV64DLEAN"
+
+[[lean_exe]]
+name = "run"
+root = "LeanRV64DLEAN"
