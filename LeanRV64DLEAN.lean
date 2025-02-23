@@ -950,7 +950,6 @@ inductive ast where
   | RFVVTYPE (_ : (rfvvfunct6 × (BitVec 1) × regidx × regidx × regidx))
   | RISCV_ZICBOM (_ : (cbop_zicbom × regidx))
   | RISCV_ZICBOZ (_ : regidx)
-  deriving BEq
 
 open ast
 
