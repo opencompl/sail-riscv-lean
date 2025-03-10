@@ -66175,6 +66175,47 @@ def execute_ZBB_RTYPEW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (
   (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) result))
   (pure RETIRE_SUCCESS)
 
+def execute_ZBB_RTYPEW' (rs1_val : (BitVec 32)) (shamt : (BitVec 32)) (op : bropw_zbb) : BitVec 32 :=
+  let result : (BitVec 32) :=
+    match op with
+    | RISCV_ROLW => (rotate_bits_left rs1_val shamt)
+    | RISCV_RORW => (rotate_bits_right rs1_val shamt)
+  (sign_extend (m := ((2 ^i 3) *i 8)) result)
+
+def skeleton (rs2 : BitVec 5) (rs1 : BitVec 5) (rd : BitVec 5) (op : BitVec 32 → BitVec 32 → BitVec 32) : SailM Retired := do
+  let rs1_val ← rX_bits rs1
+  let rs2_val ← rX_bits rs2
+  let result := op rs1_val rs2_val
+  wX_bits rd result
+  pure RETIRE_SUCCESS
+
+example : execute_ZBB_RTYPEW rs2 rs1 rd op = skeleton rs2 rs1 rd (execute_ZBB_RTYPEW' · · op) := by
+  simp [execute_ZBB_RTYPEW, skeleton, execute_ZBB_RTYPEW']
+
+  rfl
+
+#check rX_bits
+#check readReg
+
+def Register.ofBitVec : BitVec 5 → Option Register := sorry
+
+def readReg' (rX : BitVec 5) : SailM regtype :=
+  match Register.ofBitVec rX with
+  | some rX => readReg rX
+  | none /- must be zero register -/ => pure zero_reg
+
+theorem rX_bits_eq (rX : BitVec 5) : rX_bits rX = regval_from_reg <$> _ := by -- (readReg <| Register.ofBitVec rX) := by
+  simp [rX_bits, Functions.rX]
+
+
+example : execute_ZBB_RTYPEW rs2 rs1 rd op = _ := by
+  unfold execute_ZBB_RTYPEW
+  funext σ
+  simp
+  simp [Bind.bind, EStateM.bind]
+  unfold rX_bits rX
+
+
 def execute_ZBB_RTYPE (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : brop_zbb) : SailM Retired := do
   let rs1_val ← do (rX_bits rs1)
   let rs2_val ← do (rX_bits rs2)
@@ -78588,7 +78629,7 @@ def sail_main (_ : Unit) : SailM Unit := do
   sailTryCatch ((do
       (init_model ())
       (cycle_count ())
-      (loop ()))) (fun the_exception => 
+      (loop ()))) (fun the_exception =>
     match the_exception with
       | .Error_not_implemented s => (pure (print_string "Error: Not implemented: " s))
       | .Error_internal_error () => (pure (print "Error: internal error")))
