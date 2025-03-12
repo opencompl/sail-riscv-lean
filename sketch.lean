@@ -1,0 +1,10 @@
+-- name = "Lean_RV64D_LEAN"
+--defaultTargets = ["LeanRV64DLEAN"]
+--moreLeanArgs = ["--tstack=400000"]
+
+--[[lean_lib]]
+--name = "LeanRV64DLEAN"
+
+--[[lean_exe]]
+--name = "run"
+--root = "LeanRV64DLEAN" -/
