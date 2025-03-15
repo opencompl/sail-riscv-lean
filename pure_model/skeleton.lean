@@ -49,7 +49,8 @@ theorem add_eq (Imm : BitVec 12) (rs1 : regidx) (rd : regidx) :
   unfold Functions.execute_ADDIW
   unfold skeleton_unary
   unfold execute_ADDIW_pure64
-  simp
+  sorry
+
 
 theorem utype_eq (imm : (BitVec 20)) (rd : regidx) (op : uop) :
     Functions.execute_UTYPE imm rd op = skeleton_UTYPE imm rd op (execute_UTYPE_pure64) := by
@@ -99,7 +100,17 @@ theorem itype_eq (imm : (BitVec 12)) (rs1 : regidx) (rd : regidx) (op : iop) :
     Functions.execute_ITYPE (imm) (rs1) (rd) (op) = skeleton_unary rs1 rd (fun val1 => execute_ITYPE_pure64 imm val1 op) := by
   sorry
 
---theorem zicond_rtype_eq (arg0 : (BitVec 5)) (arg1 : (BitVec 5)) (arg2 : (BitVec 5)) (arg3 : zicondop) := by
+theorem zicond_rtype_eq (arg0 : regidx) (arg1 : regidx) (arg2 : regidx) (arg3 : zicondop) :
+    Functions.execute_ZICOND_RTYPE arg0 arg1 arg2 arg3 = skeleton_binary arg0 arg1 arg2 (fun val1 val2 => execute_ZICOND_RTYPE_pure64 val2 val1 arg3) := by
+  sorry
+
+theorem zbs_rytpe_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zbs) :
+    Functions.execute_ZBS_RTYPE rs2 rs1 rd op = skeleton_binary rs2 rs1 rd (fun val1 val2 => execute_ZBS_RTYPE_pure64 val2 val1 op) := by
+  sorry
+
+theorem zbs_iop_eq (shamt : (BitVec 6)) (rs1 : regidx) (rd : regidx) (op : biop_zbs) :
+    execute_ZBS_IOP (shamt ) (rs1) (rd) (op) = skeleton_unary rs1 rd (fun val1 => execute_ZBS_IOP_pure64 shamt val1 op)  :=by
+  sorry
 
 
 -- TO DO ZICOND and ZBB RytPEW

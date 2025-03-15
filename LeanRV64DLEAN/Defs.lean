@@ -529,7 +529,6 @@ inductive uop where | RISCV_LUI | RISCV_AUIPC
   deriving Inhabited, BEq
 
 
-
 inductive vext2funct6 where | VEXT2_ZVF2 | VEXT2_SVF2
   deriving Inhabited, BEq
 
@@ -1726,4 +1725,3 @@ instance : Arch where
   barrier := barrier_kind
   arch_ak := RISCV_strong_access
   sys_reg_id := Unit
-
