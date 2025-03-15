@@ -18,23 +18,23 @@ open PureFunctions
 theorem execute_ZBB_RTYPEW_pure64_RISCV_ROLW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_ROLW
     = BitVec.signExtend 64
-    (BitVec.setWidth 32 rs1_val <<< BitVec.extractLsb 4 0 rs2_val |||
-      BitVec.setWidth 32 rs1_val >>>
+    (BitVec.or (BitVec.setWidth 32 rs1_val <<< BitVec.extractLsb 4 0 rs2_val)
+      (BitVec.setWidth 32 rs1_val >>>
         (BitVec.extractLsb' 0 (BitVec.length (BitVec.extractLsb 4 0 rs2_val))
             (BitVec.ofInt (0 + BitVec.length (BitVec.extractLsb 4 0 rs2_val) + 1)
               ((BitVec.length (BitVec.setWidth 32 rs1_val)))) -
-          BitVec.extractLsb 4 0 rs2_val))
+          BitVec.extractLsb 4 0 rs2_val)))
      := by rfl
 
 --TO DO ASK IF INSTANCE IS CORRECT BV UNSURE
 theorem execute_ZBB_RTYPEW_pure64_RISCV_RORW(rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_RORW
     = BitVec.signExtend (2 ^ 3 * 8)
-    (BitVec.setWidth 32 rs1_val >>> (rs2_val.toNat % 32) |||
-      BitVec.setWidth 32 rs1_val <<<
+    (BitVec.or (BitVec.setWidth 32 rs1_val >>> (rs2_val.toNat % 32))
+      (BitVec.setWidth 32 rs1_val <<<
         ((2 ^ BitVec.length (BitVec.extractLsb 4 0 rs2_val) - rs2_val.toNat % 32 +
             BitVec.length (BitVec.setWidth 32 rs1_val) % 2 ^ (BitVec.length (BitVec.extractLsb 4 0 rs2_val) + 1)) %
-          2 ^ BitVec.length (BitVec.extractLsb 4 0 rs2_val)))
+          2 ^ BitVec.length (BitVec.extractLsb 4 0 rs2_val))))
      := by
     unfold execute_ZBB_RTYPEW_pure64
     simp

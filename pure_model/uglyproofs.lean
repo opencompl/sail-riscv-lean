@@ -14,7 +14,6 @@ open PureFunctions
 -- 1. ugly
 theorem execute_RTYPE_pure64__RISCV_SLTU (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
     PureFunctions.execute_RTYPE_pure64 (rop.RISCV_SLTU) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) =
-      let immext : BitVec 64 := (BitVec.signExtend (((2 ^ 3) * 8)) imm);
       let b := BitVec.ult rs1_val rs2_val;
       BitVec.setWidth 64 (BitVec.ofBool b)  := by
   unfold PureFunctions.execute_RTYPE_pure64
@@ -25,7 +24,6 @@ theorem execute_RTYPE_pure64__RISCV_SLTU (rs2_val : BitVec 64) (rs1_val : BitVec
 -- 1. nice rewrite
   theorem execute_RTYPE_pure64__RISCV_SLTU1 (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
     PureFunctions.execute_RTYPE_pure64 (rop.RISCV_SLTU) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) =
-      let immext : BitVec 64 := (BitVec.signExtend (((2 ^ 3) * 8)) imm);
       let b := BitVec.ult rs1_val rs2_val;
       BitVec.setWidth 64 (BitVec.ofBool b)  := by rfl
 

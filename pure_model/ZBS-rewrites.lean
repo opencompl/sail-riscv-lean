@@ -3,38 +3,44 @@ import LeanRV64DLEAN.Sail.BitVec
 import LeanRV64DLEAN.Defs
 import LeanRV64DLEAN.Specialization
 import LeanRV64DLEAN.RiscvExtras
+-- added the imports bellow, had to move pure_func to the library folder
 import LeanRV64DLEAN
 import LeanRV64DLEAN.pure_func
+
 open Functions
 open Retired
 open Sail
 open PureFunctions
+ -- ZBS extension is extension for single-bit operations
+ /-
+extension to efficently work with single bits
+bclr clear a specifc bit
+bext -> extracts a specfic bit
+binv -> inverts a specfic bit
+bset -> sets a specifc bit
 
--- COLLECTION OF PROOFS THAT CAN BE DONE WITH BV_DECIDE VERY SMOOTHLY AND NOT WITH RFL ETC.
---1. using Bv_decide
-theorem execute_RTYPE_pure64__RISCV_AND (rs2_val : BitVec 64) (rs1_val : BitVec 64)  : PureFunctions.execute_RTYPE_pure64 rop.RISCV_AND rs2_val rs1_val
-    = BitVec.and rs2_val rs1_val := by
-  unfold PureFunctions.execute_RTYPE_pure64
-  bv_decide
+ -/
+ theorem execute_ZBS_RTYPE_pure64_RISCV_BCLR (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
+      execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BCLR
+      = BitVec.and rs1_val (~~~(BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb  5 0 rs2_val))
+  := by
+  rfl
 
--- 1. no possible by rfl etc
-theorem execute_RTYPE_pure64__RISCV_AND1 (rs2_val : BitVec 64) (rs1_val : BitVec 64)  : PureFunctions.execute_RTYPE_pure64 rop.RISCV_AND rs2_val rs1_val
-    = BitVec.and rs2_val rs1_val := by
-  unfold PureFunctions.execute_RTYPE_pure64
-  --rfl
-  sorry -- doesnt work by rfl because bit vec and is not definitionally equal here.
-
-
-
--- COLLECTION OF PROOFS WHERE I DONT KNOW WHY THEY DON'T GET ACCEPTED BY BV_DECIDE
+theorem execute_ZBS_RTYPE_pure64_RISCV_BEXT (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
+      execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BEXT
+      = BitVec.setWidth 64
+    (match
+      BitVec.and rs1_val (BitVec.setWidth 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val) !=
+        0#64 with
+    | true => 1#1
+    | false => 0#1) := by rfl
 
 -- inverts the bit at the index given by the least signficant 6 bits in rs2_val
 theorem execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BINV
       = BitVec.xor rs1_val  (BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val) := by rfl
 
--- ASK WHY BV_DECIDE DOESNT SUCCED IN THIS PROOF
--- tried to proof using bv_decide
+-- tried to proof using bv_decide ASK WHY BV_DECIDE DOESNT SUCCED IN THIS PROOF
 theorem execute_ZBS_RTYPE_pure64_bvD (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BINV
       = BitVec.xor rs1_val  (BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val)
@@ -47,7 +53,6 @@ theorem execute_ZBS_RTYPE_pure64_bvD (rs2_val : BitVec 64) (rs1_val : BitVec 64)
   simp only [BitVec.truncate_eq_setWidth, BitVec.reduceSetWidth, BitVec.shiftLeft_eq', Nat.sub_zero
     , Nat.reduceAdd, BitVec.extractLsb_toNat, Nat.shiftRight_zero, Nat.reducePow]
 
--- ASK WHY BV_decide suceeds here but not above 
 theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BSET
       = rs1_val ||| BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val
@@ -57,6 +62,7 @@ theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : Bit
   unfold Sail.BitVec.extractLsb shift_bits_left zero_extend Sail.BitVec.zeroExtend
   simp only [BitVec.truncate_eq_setWidth, BitVec.shiftLeft_eq', Nat.sub_zero, Nat.reduceAdd,
     BitVec.extractLsb_toNat, Nat.shiftRight_zero, Nat.reducePow]
-  unfold HPow.hPow instHPowInt_leanRV64DLEAN -- to conclude the proof can either use bv_decide or rfl, both work but not sure why
-  --simp only [Int.reduceToNat, Int.reducePow, Int.reduceMul, BitVec.reduceSetWidth] these are the steps done by simp and I taught bv_decide only works with ints
+  unfold HPow.hPow instHPowInt_leanRV64DLEAN
   bv_decide
+  --rfl, works by using either bv_decide or rfl
+  --bv_decide

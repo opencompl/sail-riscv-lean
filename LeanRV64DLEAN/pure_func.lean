@@ -346,7 +346,6 @@ def execute_MUL_pure64 (mul_op : mul_op) (rs2_val : (BitVec 64)) (rs1_val : (Bit
 -- BitVec.ofNat 0 64
 -- HPow.hPow
 
-#check HPow.hPow
 /-
 example (f : BitVec 32 -> BitVec 32) (x : α) (h : α = BitVec 32) (y : BitVec 32) :
     f y = y := by
@@ -354,8 +353,8 @@ example (f : BitVec 32 -> BitVec 32) (x : α) (h : α = BitVec 32) (y : BitVec 3
 
 
 --@[simp]
-theorem foo :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 0#64 1#64 = 0#64 := by
-  sorry
+--theorem foo :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 0#64 1#64 = 0#64 := by
+
   --unfold execute_MUL_pure64
   --simp
   --simp [Functions.xlen]
@@ -415,23 +414,6 @@ theorem one_MUL :  execute_MUL_pure64 { high := false, signed_rs1 := false, sign
   sorry -/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#check foo
 
 /-
 def execute_DIVW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (s : Bool) : SailM Retired := do
@@ -663,7 +645,7 @@ def execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : b
     | RISCV_BSETI => (rs1_val ||| mask)
   (wX_bits rd result)
   (pure RETIRE_SUCCESS)-/
-  
+
   def execute_ZBS_IOP_pure64 (shamt : (BitVec 6)) (rs1_val : BitVec 64) (op : biop_zbs) : BitVec 64 :=
   let mask : xlenbits :=
     (shift_bits_left (zero_extend (m := ((2 ^i 3) *i 8)) (0b1 : (BitVec 1))) shamt)
@@ -692,6 +674,7 @@ def execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : b
   (wX_bits rd result)
   (pure RETIRE_SUCCESS)-/
 
+-- to do didnt extract it to bit vec domain so far
 def execute_ZBKB_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : brop_zbkb) : BitVec 64 :=
     match op with
     | .RISCV_PACK =>
