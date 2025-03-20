@@ -18,31 +18,32 @@ open PureFunctions
 theorem execute_ZBB_RTYPEW_pure64_RISCV_ROLW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_ROLW
     = BitVec.signExtend 64
-    (BitVec.or (BitVec.setWidth 32 rs1_val <<< BitVec.extractLsb 4 0 rs2_val)
-      (BitVec.setWidth 32 rs1_val >>>
-        (BitVec.extractLsb' 0 (BitVec.length (BitVec.extractLsb 4 0 rs2_val))
-            (BitVec.ofInt (0 + BitVec.length (BitVec.extractLsb 4 0 rs2_val) + 1)
-              ((BitVec.length (BitVec.setWidth 32 rs1_val)))) -
-          BitVec.extractLsb 4 0 rs2_val)))
+    (BitVec.or (BitVec.shiftLeft (BitVec.setWidth 32 rs1_val) (BitVec.extractLsb 4 0 rs2_val).toNat)
+      (BitVec.ushiftRight (BitVec.setWidth 32 rs1_val) (
+        ((BitVec.sub ((BitVec.extractLsb' 0 (5)
+            (BitVec.ofInt (6)
+              (32))))
+          (BitVec.extractLsb 4 0 rs2_val)))).toNat))
      := by rfl
 
---TO DO ASK IF INSTANCE IS CORRECT BV UNSURE
 theorem execute_ZBB_RTYPEW_pure64_RISCV_RORW(rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_RORW
-    = BitVec.signExtend (2 ^ 3 * 8)
-    (BitVec.or (BitVec.setWidth 32 rs1_val >>> (rs2_val.toNat % 32))
-      (BitVec.setWidth 32 rs1_val <<<
-        ((2 ^ BitVec.length (BitVec.extractLsb 4 0 rs2_val) - rs2_val.toNat % 32 +
-            BitVec.length (BitVec.setWidth 32 rs1_val) % 2 ^ (BitVec.length (BitVec.extractLsb 4 0 rs2_val) + 1)) %
-          2 ^ BitVec.length (BitVec.extractLsb 4 0 rs2_val))))
+    = BitVec.signExtend (64)
+    (BitVec.or (BitVec.ushiftRight (BitVec.setWidth 32 rs1_val) (rs2_val.toNat % 32))
+      (BitVec.shiftLeft (BitVec.setWidth 32 rs1_val)
+        ((2 ^ 5 - rs2_val.toNat % 32 +
+            BitVec.length (BitVec.setWidth 32 rs1_val) % 2 ^ (5 + 1)) %
+          2 ^ 5)))
      := by
     unfold execute_ZBB_RTYPEW_pure64
     simp
-    unfold sign_extend Sail.BitVec.signExtend rotate_bits_right shift_bits_right Sail.BitVec.extractLsb shift_bits_left to_bits get_slice_int
+    unfold Functions.sign_extend  Sail.BitVec.signExtend Functions.rotate_bits_right shift_bits_right
+         Sail.BitVec.extractLsb shift_bits_left Functions.to_bits get_slice_int
     simp
+    rfl
+
     --unfold HOr.hOr instHOrBitVec_leanRV64DLEAN
     --simp
-    rfl
 
 -- extract byte or halfwords and either sign or zero extend it
 theorem execute_ZBB_EXTOP_pure64_RISCV_SEXTB (rs1_val : BitVec 64) :

@@ -10,19 +10,23 @@ open Retired
 open Sail
 open PureFunctions
 
+
+theorem name (params₁ : type₁ ) (params₂ : type₂ ) (params₃ : type₃ ) :
+  _ = _  := by sorry
+  /- PROOF -/
+
 -- COLLECTION OF PROOFS THAT CAN BE DONE WITH BV_DECIDE VERY SMOOTHLY AND NOT WITH RFL ETC.
 --1. using Bv_decide
 theorem execute_RTYPE_pure64__RISCV_AND (rs2_val : BitVec 64) (rs1_val : BitVec 64)  : PureFunctions.execute_RTYPE_pure64 rop.RISCV_AND rs2_val rs1_val
-    = BitVec.and rs2_val rs1_val := by
+    = BitVec.and rs1_val rs2_val := by
   unfold PureFunctions.execute_RTYPE_pure64
   bv_decide
 
 -- 1. no possible by rfl etc
 theorem execute_RTYPE_pure64__RISCV_AND1 (rs2_val : BitVec 64) (rs1_val : BitVec 64)  : PureFunctions.execute_RTYPE_pure64 rop.RISCV_AND rs2_val rs1_val
-    = BitVec.and rs2_val rs1_val := by
+    = BitVec.and rs1_val rs2_val := by
   unfold PureFunctions.execute_RTYPE_pure64
-  --rfl
-  sorry -- doesnt work by rfl because bit vec and is not definitionally equal here.
+  rfl
 
 
 
@@ -47,7 +51,7 @@ theorem execute_ZBS_RTYPE_pure64_bvD (rs2_val : BitVec 64) (rs1_val : BitVec 64)
   simp only [BitVec.truncate_eq_setWidth, BitVec.reduceSetWidth, BitVec.shiftLeft_eq', Nat.sub_zero
     , Nat.reduceAdd, BitVec.extractLsb_toNat, Nat.shiftRight_zero, Nat.reducePow]
 
--- ASK WHY BV_decide suceeds here but not above 
+-- ASK WHY BV_decide suceeds here but not above
 theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BSET
       = rs1_val ||| BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val

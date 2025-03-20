@@ -22,7 +22,7 @@ bset -> sets a specifc bit
  -/
  theorem execute_ZBS_RTYPE_pure64_RISCV_BCLR (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BCLR
-      = BitVec.and rs1_val (~~~(BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb  5 0 rs2_val))
+      = BitVec.and rs1_val (BitVec.not (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) (BitVec.extractLsb  5 0 rs2_val).toNat))
   := by
   rfl
 
@@ -30,20 +30,22 @@ theorem execute_ZBS_RTYPE_pure64_RISCV_BEXT (rs2_val : BitVec 64) (rs1_val : Bit
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BEXT
       = BitVec.setWidth 64
     (match
-      BitVec.and rs1_val (BitVec.setWidth 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val) !=
+      BitVec.and rs1_val (BitVec.shiftLeft (BitVec.setWidth 64 1#1) (BitVec.extractLsb 5 0 rs2_val).toNat) !=
         0#64 with
     | true => 1#1
     | false => 0#1) := by rfl
 
+
+
 -- inverts the bit at the index given by the least signficant 6 bits in rs2_val
-theorem execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
+theorem execute_ZBS_RTYPE_pure64_BINV (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BINV
-      = BitVec.xor rs1_val  (BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val) := by rfl
+      = BitVec.xor rs1_val  (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) (BitVec.extractLsb 5 0 rs2_val).toNat) := by rfl
 
 -- tried to proof using bv_decide ASK WHY BV_DECIDE DOESNT SUCCED IN THIS PROOF
 theorem execute_ZBS_RTYPE_pure64_bvD (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BINV
-      = BitVec.xor rs1_val  (BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val)
+      = BitVec.xor rs1_val  (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) (BitVec.extractLsb 5 0 rs2_val).toNat)
   := by
   unfold PureFunctions.execute_ZBS_RTYPE_pure64
   simp
@@ -55,7 +57,7 @@ theorem execute_ZBS_RTYPE_pure64_bvD (rs2_val : BitVec 64) (rs1_val : BitVec 64)
 
 theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BSET
-      = rs1_val ||| BitVec.zeroExtend 64 1#1 <<< BitVec.extractLsb 5 0 rs2_val
+      = BitVec.or rs1_val (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) (BitVec.extractLsb 5 0 rs2_val).toNat)
   := by
   unfold PureFunctions.execute_ZBS_RTYPE_pure64
   simp
@@ -66,3 +68,33 @@ theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : Bit
   bv_decide
   --rfl, works by using either bv_decide or rfl
   --bv_decide
+
+
+--execute_ZBS_IOP_pure64
+theorem execute_ZBS_IOP_pure64_RISCV_BCLRI (shamt : BitVec 6) (rs1_val : BitVec 64) :
+  execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BCLRI
+  = BitVec.and rs1_val (BitVec.not (BitVec.shiftLeft (BitVec.setWidth 64 1#1) (shamt.toNat))):= by --rfl would also work
+    unfold PureFunctions.execute_ZBS_IOP_pure64
+    simp
+    unfold shift_bits_left zero_extend Sail.BitVec.zeroExtend
+    rfl
+
+theorem execute_ZBS_IOP_pure64_RISCV_BEXTI (shamt : BitVec 6) (rs1_val : BitVec 64) :
+  execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BEXTI
+    = BitVec.setWidth 64
+      (match (BitVec.and (rs1_val) (BitVec.shiftLeft (BitVec.setWidth 64 1#1) shamt.toNat)) != 0#64 with
+      | true => 1#1
+      | false => 0#1)
+  := by rfl
+
+theorem execute_ZBS_IOP_pure64_RISCV_BINVI (shamt : BitVec 6) (rs1_val : BitVec 64) :
+    execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BINVI
+    = BitVec.xor rs1_val  (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) shamt.toNat)
+  := by rfl
+
+theorem execute_ZBS_IOP_pure64_RISCV_BSETI (shamt : BitVec 6) (rs1_val : BitVec 64) :
+  execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BSETI
+  = BitVec.or rs1_val (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) shamt.toNat) := by rfl
+    --unfold PureFunctions.execute_ZBS_IOP_pure64
+    --simp
+    --unfold shift_bits_left zero_extend Sail.BitVec.zeroExtend

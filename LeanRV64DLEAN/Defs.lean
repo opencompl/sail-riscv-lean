@@ -428,7 +428,6 @@ inductive mmfunct6 where | MM_VMAND | MM_VMNAND | MM_VMANDN | MM_VMXOR | MM_VMOR
 
 
 
-
 structure mul_op where
   high : Bool
   signed_rs1 : Bool
