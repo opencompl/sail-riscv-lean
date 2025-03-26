@@ -3,15 +3,16 @@ import LeanRV64DLEAN.Sail.BitVec
 import LeanRV64DLEAN.Defs
 import LeanRV64DLEAN.Specialization
 import LeanRV64DLEAN.RiscvExtras
--- added the imports bellow, had to move pure_func to the library folder
 import LeanRV64DLEAN
 import LeanRV64DLEAN.pure_func
-
 
 open Functions
 open Retired
 open Sail
 open PureFunctions
+
+-- pure functions modell <-> pure BitVec domain lowering
+
 
 -- missing BitVector Lemmas:
 -- @[simp]
@@ -60,9 +61,10 @@ theorem add_set_Width (x : BitVec w1) (y : BitVec w2) :
     BitVec.add x y =  x + y  := by
       simp [HAdd.hAdd]
 
+
 -- SECTION WHERE I PROVE THAT EACH RISC-V INSTRUCTION CORRESPONDS TO SIMPLER BIT VECTOR INSTRUCTIONS
 -- SIMPLIFICATION OF RISC-V SEMANTICS TO BITVECTORS and writting coorespodnig proofs
--- SAIL modell <-> BitVec modell
+-- pure functions modell <-> pure BitVec domain lowering
 
 theorem execute_ADDIW_pure64_BitVec (imm : BitVec 12) (rs1_val : BitVec 64) :
   PureFunctions.execute_ADDIW_pure64 imm rs1_val =
@@ -294,6 +296,7 @@ theorem execute_REMW_pure64_unsigned (rs2_val : BitVec 64) (rs1_val : BitVec 64)
   unfold sign_extend Sail.BitVec.signExtend Sail.BitVec.extractLsb to_bits get_slice_int
   rw [← Int.ofNat_eq_coe, ← Int.ofNat_eq_coe, ← Int.ofNat_eq_coe]
   simp
+
 
 theorem execute_REMW_pure64_signed :
     PureFunctions.execute_REMW_pure64 (True) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) =
@@ -626,9 +629,8 @@ theorem execute_ZICOND_RTYPE_pure64_RISCV_RISCV_CZERO_NEZ (rs2_val : (BitVec 64)
   unfold zeros_implicit
   rfl
 
--- TO DO ZBKB
 
--- SIMPLE PEEPHOLE REWRITES:Prove simple rewrites based on the BitVector modelling
+-- tested SIMPLE PEEPHOLE REWRITES:Prove simple rewrites based on the BitVector modelling
 
 theorem  add_zero : PureFunctions.execute_ADDIW_pure64 (imm : BitVec 12) (0#64) =  BitVec.signExtend 64 (BitVec.setWidth 32 (BitVec.add (BitVec.signExtend 64 imm) 0#64))  := by
   rw [execute_ADDIW_pure64_BitVec]

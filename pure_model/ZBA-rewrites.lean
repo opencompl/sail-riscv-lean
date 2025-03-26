@@ -12,7 +12,7 @@ open Retired
 open Sail
 open PureFunctions
 
--- ZBA extensions
+-- ZBA extensions extraction to pure bit vectors 
 
 -- shifts unsigned word by some specifc amount and adds rs2_val
 theorem execute_ZBA_RTYPEUW_pure64_RISCV_ADDUW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :

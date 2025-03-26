@@ -3,23 +3,15 @@ import LeanRV64DLEAN.Sail.BitVec
 import LeanRV64DLEAN.Defs
 import LeanRV64DLEAN.Specialization
 import LeanRV64DLEAN.RiscvExtras
--- added the imports bellow, had to move pure_func to the library folder
 import LeanRV64DLEAN
 import LeanRV64DLEAN.pure_func
-
 open Functions
 open Retired
 open Sail
 open PureFunctions
- -- ZBS extension is extension for single-bit operations
- /-
-extension to efficently work with single bits
-bclr clear a specifc bit
-bext -> extracts a specfic bit
-binv -> inverts a specfic bit
-bset -> sets a specifc bit
 
- -/
+ -- ZBS extension is extension for single-bit operations
+
  theorem execute_ZBS_RTYPE_pure64_RISCV_BCLR (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BCLR
       = BitVec.and rs1_val (BitVec.not (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) (BitVec.extractLsb  5 0 rs2_val).toNat))
@@ -34,8 +26,6 @@ theorem execute_ZBS_RTYPE_pure64_RISCV_BEXT (rs2_val : BitVec 64) (rs1_val : Bit
         0#64 with
     | true => 1#1
     | false => 0#1) := by rfl
-
-
 
 -- inverts the bit at the index given by the least signficant 6 bits in rs2_val
 theorem execute_ZBS_RTYPE_pure64_BINV (rs2_val : BitVec 64) (rs1_val : BitVec 64) :

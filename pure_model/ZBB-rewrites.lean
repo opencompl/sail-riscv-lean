@@ -12,9 +12,8 @@ open Retired
 open Sail
 open PureFunctions
 
--- SIMPLIFICATION OF RISC-V EXTENSION, had to translate into bit vec form
+---- ZBB extensions extraction to pure bit vectors
 
--- ZBB EXTENSION
 theorem execute_ZBB_RTYPEW_pure64_RISCV_ROLW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_ROLW
     = BitVec.signExtend 64
@@ -57,3 +56,26 @@ theorem execute_ZBB_EXTOP_pure64_RISCV_SEXTH (rs1_val : BitVec 64) :
 theorem execute_ZBB_EXTOP_pure64_RISCV_ZEXTH (rs1_val : BitVec 64) :
     execute_ZBB_EXTOP_pure64 rs1_val extop_zbb.RISCV_ZEXTH
       = BitVec.zeroExtend 64 (BitVec.extractLsb 15 0 rs1_val) := by rfl
+
+
+theorem execute_ZBB_RTYPE_pure_RISCV_ROL (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
+  execute_ZBB_RTYPE_pure (rs2_val) (rs1_val ) (brop_zbb.RISCV_ROL) =
+   BitVec.or (BitVec.shiftLeft  rs1_val (BitVec.extractLsb 5 0 rs2_val).toNat)
+    (BitVec.ushiftRight rs1_val  (BitVec.extractLsb' 0 6 (BitVec.ofInt (7) (64)) - BitVec.extractLsb 5 0 rs2_val).toNat)
+  :=
+  by
+  unfold execute_ZBB_RTYPE_pure
+  simp
+  unfold Sail.BitVec.extractLsb rotate_bits_left shift_bits_left shift_bits_right to_bits BitVec.length get_slice_int
+  rfl
+
+theorem execute_ZBB_RTYPE_pure_RISCV_ROR (rs2_val : BitVec 64) (rs1_val : BitVec 64)  :
+  execute_ZBB_RTYPE_pure (rs2_val) (rs1_val ) (brop_zbb.RISCV_ROR) =
+    BitVec.or (BitVec.ushiftRight rs1_val (BitVec.extractLsb 5 0 rs2_val).toNat)
+    (BitVec.shiftLeft rs1_val ((BitVec.extractLsb' 0 6 (BitVec.ofInt (7) (64)) - BitVec.extractLsb 5 0 rs2_val)).toNat)
+   :=
+  by
+  unfold execute_ZBB_RTYPE_pure
+  simp
+  unfold rotate_bits_right Sail.BitVec.extractLsb shift_bits_left to_bits get_slice_int shift_bits_right BitVec.length
+  rfl

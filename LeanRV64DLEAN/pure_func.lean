@@ -16,45 +16,15 @@ open Functions
 open Retired
 open Sail
 
-
+ -- extracted a subset of (pure) functions
 --14 functions
 
- /- def execute_ADDIW (imm : (BitVec 12)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) : SailM Retired := do
-  let result ← do (pure ((← (Functions.rX_bits rs1)) + (sign_extend (m := ((2 ^i 3) *i 8)) imm)))
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb result 31 0)))
-  (pure RETIRE_SUCCESS) -/
 namespace PureFunctions
 --purified
 -- semantics: adds signed extended immediate to reg rs1 and prodcues sign-extension of 64 bit result in result register
 def execute_ADDIW_pure64 (imm : (BitVec 12)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let result :=  rs1_val + (sign_extend (m := ((2 ^i 3) *i 8)) imm) -- rs1_val + sign extended immediate
   (sign_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb result 31 0))
-
-/-
-def execute_UTYPE (imm : (BitVec 20)) (rd : (BitVec 5)) (op : uop) : SailM Retired := do
-  let off : xlenbits := (sign_extend (m := ((2 ^i 3) *i 8)) (imm ++ (0x000 : (BitVec 12))))
-  (wX_bits rd
-    (← do
-      match op with
-      | RISCV_LUI => (pure off)
-      | RISCV_AUIPC => (pure ((← (get_arch_pc ())) + off))))
-  (pure RETIRE_SUCCESS)
--/
--- TO DO: build diffrent skeletion for it
---purified, utype means upper immediate type, used for loading large constants and efficientl working with them
--- careful: modelled the program counter as an extra input
-
-
-
-
-/- def execute_UTYPE (imm : (BitVec 20)) (rd : regidx) (op : uop) : SailM Retired := do
-  let off : xlenbits := (sign_extend (m := ((2 ^i 3) *i 8)) (imm ++ (0x000 : (BitVec 12))))
-  (wX_bits rd
-    (← do
-      match op with
-      | uop.RISCV_LUI => (pure off)
-      | uop.RISCV_AUIPC => (pure ((← (get_arch_pc ())) + off))))
-  (pure RETIRE_SUCCESS) -/
 
 
 def execute_UTYPE_pure64 (imm : (BitVec 20)) (pc : (BitVec 64)) (op : uop)  : BitVec 64 :=
@@ -63,20 +33,6 @@ def execute_UTYPE_pure64 (imm : (BitVec 20)) (pc : (BitVec 64)) (op : uop)  : Bi
       | uop.RISCV_LUI => off
       | uop.RISCV_AUIPC => BitVec.add pc off
   result
-
-/-
-def execute_SHIFTIWOP (shamt : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : sopw) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let result : (BitVec 32) :=
-    match op with
-    | RISCV_SLLIW => (shift_bits_left rs1_val shamt)
-    | RISCV_SRLIW => (shift_bits_right rs1_val shamt)
-    | RISCV_SRAIW => (shift_bits_right_arith rs1_val shamt)
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) result))
-  (pure RETIRE_SUCCESS)
-  -/
--- TO DO: need an own skelecton
--- purified
 
 def execute_SHIFTIWOP_pure64 (shamt : (BitVec 5)) (op : sopw) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_val32 := Sail.BitVec.extractLsb (rs1_val) 31 0
@@ -87,39 +43,13 @@ def execute_SHIFTIWOP_pure64 (shamt : (BitVec 5)) (op : sopw) (rs1_val : (BitVec
     | sopw.RISCV_SRAIW => (shift_bits_right_arith rs1_val32 shamt)
   (sign_extend (m := ((2 ^i 3) *i 8)) result) -- sign extend it to 64 bit again
 
-/-
-def execute_SHIFTIOP (shamt : (BitVec 6)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : sop) : SailM Retired := do
-  (wX_bits rd
-    (← do
-      match op with
-      | RISCV_SLLI => (pure (shift_bits_left (← (rX_bits rs1)) shamt))
-      | RISCV_SRLI => (pure (shift_bits_right (← (rX_bits rs1)) shamt))
-      | RISCV_SRAI => (pure (shift_bits_right_arith (← (rX_bits rs1)) shamt))))
-  (pure RETIRE_SUCCESS)
-  -/
-
-
--- purified
 def execute_SHIFTIOP_pure64 (shamt : (BitVec 6)) (op : sop) (rs1_val : (BitVec 64)) : BitVec 64 :=
       match op with
       | sop.RISCV_SLLI => (shift_bits_left rs1_val shamt)
       | sop.RISCV_SRLI => (shift_bits_right rs1_val shamt)
       | sop.RISCV_SRAI => (shift_bits_right_arith (rs1_val) shamt)
 
-/-
-def execute_RTYPEW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : ropw) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let rs2_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs2)) 31 0))
-  let result : (BitVec 32) :=
-    match op with
-    | RISCV_ADDW => (rs1_val + rs2_val)
-    | RISCV_SUBW => (rs1_val - rs2_val)
-    | RISCV_SLLW => (shift_bits_left rs1_val (Sail.BitVec.extractLsb rs2_val 4 0))
-    | RISCV_SRLW => (shift_bits_right rs1_val (Sail.BitVec.extractLsb rs2_val 4 0))
-    | RISCV_SRAW => (shift_bits_right_arith rs1_val (Sail.BitVec.extractLsb rs2_val 4 0))
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) result))
-  (pure RETIRE_SUCCESS)
--/
+
 -- purified, *W suffix indicates that operates on the lower 32 bits, done
 def execute_RTYPEW_pure64 (op : ropw) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_val32 := Sail.BitVec.extractLsb rs1_val 31 0
@@ -133,32 +63,6 @@ def execute_RTYPEW_pure64 (op : ropw) (rs2_val : (BitVec 64)) (rs1_val : (BitVec
     | ropw.RISCV_SRAW => (shift_bits_right_arith rs1_val32 (Sail.BitVec.extractLsb rs2_val32 4 0))
   ((sign_extend (m := ((2 ^i 3) *i 8)) result)) -- sign extended the result to 64 bits again
 
-
-/- def execute_RTYPE (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : rop) : SailM Retired := do
-  (wX_bits rd
-    (← do
-      match op with
-      | RISCV_ADD => (pure ((← (rX_bits rs1)) + (← (rX_bits rs2))))
-      | RISCV_SLT =>
-        (pure (zero_extend (m := ((2 ^i 3) *i 8))
-            (bool_to_bits (zopz0zI_s (← (rX_bits rs1)) (← (rX_bits rs2))))))
-      | RISCV_SLTU =>
-        (pure (zero_extend (m := ((2 ^i 3) *i 8))
-            (bool_to_bits (zopz0zI_u (← (rX_bits rs1)) (← (rX_bits rs2))))))
-      | RISCV_AND => (pure ((← (rX_bits rs1)) &&& (← (rX_bits rs2))))
-      | RISCV_OR => (pure ((← (rX_bits rs1)) ||| (← (rX_bits rs2))))
-      | RISCV_XOR => (pure ((← (rX_bits rs1)) ^^^ (← (rX_bits rs2))))
-      | RISCV_SLL =>
-        (pure (shift_bits_left (← (rX_bits rs1))
-            (Sail.BitVec.extractLsb (← (rX_bits rs2)) (log2_xlen -i 1) 0)))
-      | RISCV_SRL =>
-        (pure (shift_bits_right (← (rX_bits rs1))
-            (Sail.BitVec.extractLsb (← (rX_bits rs2)) (log2_xlen -i 1) 0)))
-      | RISCV_SUB => (pure ((← (rX_bits rs1)) - (← (rX_bits rs2))))
-      | RISCV_SRA =>
-        (pure (shift_bits_right_arith (← (rX_bits rs1))
-            (Sail.BitVec.extractLsb (← (rX_bits rs2)) (log2_xlen -i 1) 0)))))
-  (pure RETIRE_SUCCESS) -/
 
 -- purified,
 def execute_RTYPE_pure64 (op : rop)  (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)): BitVec 64 :=
@@ -186,26 +90,6 @@ def execute_RTYPE_pure64 (op : rop)  (rs2_val : (BitVec 64)) (rs1_val : (BitVec 
             (Sail.BitVec.extractLsb (rs2_val) (Functions.log2_xlen -i 1) 0))
   result
 
-/-
-/-- Type quantifiers: k_ex287536# : Bool -/
-def execute_REMW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (s : Bool) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let rs2_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs2)) 31 0))
-  let rs1_int : Int :=
-    if s
-    then (BitVec.toInt rs1_val)
-    else (BitVec.toNat rs1_val)
-  let rs2_int : Int :=
-    if s
-    then (BitVec.toInt rs2_val)
-    else (BitVec.toNat rs2_val)
-  let r : Int :=
-    if (BEq.beq rs2_int 0)
-    then rs1_int
-    else (Int.tmod rs1_int rs2_int)
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) (to_bits 32 r)))
-  (pure RETIRE_SUCCESS)
--/
 
 --purified
 def execute_REMW_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)): BitVec 64 :=
@@ -224,27 +108,7 @@ def execute_REMW_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64
     then rs1_int
     else (Int.tmod rs1_int rs2_int)
   sign_extend (m := ((2 ^i 3) *i 8)) (to_bits 32 r) -- convert it to 32 bits and then sign extend it to 64
-/-
-/-- Type quantifiers: k_ex287551# : Bool -/
-def execute_REM (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (s : Bool) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let rs1_int : Int :=
-    if s
-    then (BitVec.toInt rs1_val)
-    else (BitVec.toNat rs1_val)
-  let rs2_int : Int :=
-    if s
-    then (BitVec.toInt rs2_val)
-    else (BitVec.toNat rs2_val)
-  let r : Int :=
-    if (BEq.beq rs2_int 0)
-    then rs1_int
-    else (Int.tmod rs1_int rs2_int)
-  (wX_bits rd (to_bits xlen r))
-  (pure RETIRE_SUCCESS)
--/
---purified
+
 def execute_REM_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_int : Int :=
     if s -- checks sign
@@ -260,22 +124,7 @@ def execute_REM_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)
     else (Int.tmod rs1_int rs2_int)
   (to_bits Functions.xlen r) -- converts it to xlen bits, usually 64
 
-
-
-/-
-def execute_MULW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let rs2_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs2)) 31 0))
-  let rs1_int : Int := (BitVec.toInt rs1_val)
-  let rs2_int : Int := (BitVec.toInt rs2_val)
-  let result32 := (Sail.BitVec.extractLsb (to_bits 64 (rs1_int *i rs2_int)) 31 0)
-  let result : xlenbits := (sign_extend (m := ((2 ^i 3) *i 8)) result32)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)
--/
-
 --purified
--- computes product of the 32 lower bits of each reg then sign extends it to 64 bits
 def execute_MULW_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_val32 := (Sail.BitVec.extractLsb rs1_val 31 0)
   let rs2_val32 := (Sail.BitVec.extractLsb rs2_val 31 0)
@@ -284,27 +133,8 @@ def execute_MULW_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec
   let result32 := (Sail.BitVec.extractLsb (to_bits 64 (rs1_int *i rs2_int)) 31 0)
   let result : xlenbits := (sign_extend (m := ((2 ^i 3) *i 8)) result32)
   result
-/-
-def execute_MUL (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (mul_op : mul_op) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let rs1_int : Int :=
-    if mul_op.signed_rs1
-    then (BitVec.toInt rs1_val)
-    else (BitVec.toNat rs1_val)
-  let rs2_int : Int :=
-    if mul_op.signed_rs2
-    then (BitVec.toInt rs2_val)
-    else (BitVec.toNat rs2_val)
-  let result_wide := (to_bits (2 *i xlen) (rs1_int *i rs2_int))
-  let result :=
-    if mul_op.high
-    then (Sail.BitVec.extractLsb result_wide ((2 *i xlen) -i 1) xlen)
-    else (Sail.BitVec.extractLsb result_wide (xlen -i 1) 0)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)
--/
---purified, done
+
+--purified,
 def execute_MUL_pure64 (mul_op : mul_op) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_int : Int :=
     if mul_op.signed_rs1 -- if signed then modell as integer operation
@@ -321,100 +151,6 @@ def execute_MUL_pure64 (mul_op : mul_op) (rs2_val : (BitVec 64)) (rs1_val : (Bit
     else (Sail.BitVec.extractLsb result_wide (Functions.xlen -i 1) 0)
   result
 
--- BitVec.ofNat 0 64
--- HPow.hPow
-
-/-
-example (f : BitVec 32 -> BitVec 32) (x : α) (h : α = BitVec 32) (y : BitVec 32) :
-    f y = y := by
-  rw [← h] at y -/
-
-
---@[simp]
---theorem foo :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 0#64 1#64 = 0#64 := by
-
-  --unfold execute_MUL_pure64
-  --simp
-  --simp [Functions.xlen]
-  --have h1 : (2 : Int) * (2 ^(3 : Int) * 8) = 128 := by rfl
-  --rw [h1]
-  --have h2 :  ((2 : Int) ^(3 : Int) * 8 -1) = 63 := by rfl
-  --simp only [Int.reduceToNat, to_bits, get_slice_int, Nat.reduceAdd, Int.toNat_zero,
-    --Int.Nat.cast_ofNat_Int, BitVec.ofInt_ofNat, BitVec.reduceExtracLsb']
-  --simp only [Sail.BitVec.extractLsb, BitVec.extractLsb_ofNat, Nat.reducePow,
-    --Nat.zero_mod, Nat.shiftRight_zero]
-  --rfl
-
--- #print axioms foo
-/-
--- proving that multiplication having MUL 0 rs1 rd = 0
-theorem zero_MUL :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 0#64 (reg1 : BitVec 64) = 0#64 := by
-  unfold execute_MUL_pure64
-  simp
-  simp [Functions.xlen]
-  have h1 : (2 : Int) * (2 ^(3 : Int) * 8) = 128 := by rfl --such that types match
-  rw [h1]
-  simp only [Int.reduceToNat] --yields expression thats definitionally equal
-  rfl
-
-theorem MUL_zero :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } (reg2 : BitVec 64) 0#64 = 0#64 := by
-  unfold execute_MUL_pure64
-  simp
-  simp [Functions.xlen]
-  have h1 : (2 : Int) * (2 ^(3 : Int) * 8) = 128 := by rfl --such that types match
-  rw [h1]
-  simp only [Int.reduceToNat] --yields expression thats definitionally equal
-  rfl
-
---theorem extract_bits : BitVec.extract_bits (p : BitVec 128) (64) (0) = BitVec.mul 1#64 p := by
-  --sorry
-
-
-theorem MUL_bitvec : execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } (reg1 : BitVec 64) (reg2 : BitVec 64) = BitVec.mul reg2 reg1 := by
-  unfold execute_MUL_pure64
-  simp
-  simp [Functions.xlen]
-  have h1 : (2 : Int) * (2 ^(3 : Int) * 8) = 128 := by rfl --such that types match
-  rw [h1]
-  simp
-  sorry --[TO DO]
-
-
-theorem one_MUL :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 1#64 (reg1 : BitVec 64) = reg1 := by
-  unfold execute_MUL_pure64
-  simp
-  simp [Functions.xlen]
-  have h1 : (2 : Int) * (2 ^(3 : Int) * 8) = 128 := by rfl --such that types match
-  rw [h1]
-  simp
-  unfold to_bits
-  unfold get_slice_int
-  sorry -/
-
-
-
-/-
-def execute_DIVW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (s : Bool) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let rs2_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs2)) 31 0))
-  let rs1_int : Int :=
-    if s
-    then (BitVec.toInt rs1_val)
-    else (BitVec.toNat rs1_val)
-  let rs2_int : Int :=
-    if s
-    then (BitVec.toInt rs2_val)
-    else (BitVec.toNat rs2_val)
-  let q : Int :=
-    if (BEq.beq rs2_int 0)
-    then (-1)
-    else (Int.tdiv rs1_int rs2_int)
-  let q' : Int :=
-    if (Bool.and s (q >b ((2 ^i 31) -i 1)))
-    then (0 -i (2 ^i 31))
-    else q
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) (to_bits 32 q')))
-  (pure RETIRE_SUCCESS) -/
 
 -- purified
 def execute_DIVW_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
@@ -438,32 +174,6 @@ def execute_DIVW_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64
     else q
   sign_extend (m := ((2 ^i 3) *i 8)) (to_bits 32 q')
 
-/-- Type quantifiers: k_ex290550# : Bool -/
-/-
-def execute_DIV (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (s : Bool) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let rs1_int : Int :=
-    if s
-    then (BitVec.toInt rs1_val)
-    else (BitVec.toNat rs1_val)
-  let rs2_int : Int :=
-    if s
-    then (BitVec.toInt rs2_val)
-    else (BitVec.toNat rs2_val)
-  let q : Int :=
-    if (BEq.beq rs2_int 0)
-    then (-1)
-    else (Int.tdiv rs1_int rs2_int)
-  let q' : Int :=
-    if (Bool.and s (q >b xlen_max_signed))
-    then xlen_min_signed
-    else q
-  (wX_bits rd (to_bits xlen q'))
-  (pure RETIRE_SUCCESS)
--/
---purified
--- divisio of r1 by r2
 def execute_DIV_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=
   let rs1_int : Int :=
     if s -- checks if signed division or not
@@ -483,24 +193,6 @@ def execute_DIV_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)
     else q
   (to_bits Functions.xlen q') -- return value
 
-/-
-def execute_ITYPE (imm : (BitVec 12)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : iop) : SailM Retired := do
-  let immext : xlenbits := (sign_extend (m := ((2 ^i 3) *i 8)) imm)
-  (wX_bits rd
-    (← do
-      match op with
-      | RISCV_ADDI => (pure ((← (rX_bits rs1)) + immext))
-      | RISCV_SLTI =>
-        (pure (zero_extend (m := ((2 ^i 3) *i 8))
-            (bool_to_bits (zopz0zI_s (← (rX_bits rs1)) immext))))
-      | RISCV_SLTIU =>
-        (pure (zero_extend (m := ((2 ^i 3) *i 8))
-            (bool_to_bits (zopz0zI_u (← (rX_bits rs1)) immext))))
-      | RISCV_ANDI => (pure ((← (rX_bits rs1)) &&& immext))
-      | RISCV_ORI => (pure ((← (rX_bits rs1)) ||| immext))
-      | RISCV_XORI => (pure ((← (rX_bits rs1)) ^^^ immext))))
-  (pure RETIRE_SUCCESS)
--/
 
 --purified immediate operations, did let the immediate be 12 bit vector
 def execute_ITYPE_pure64 (imm : (BitVec 12)) (rs1_val : (BitVec 64)) (op : iop) : BitVec 64 :=
@@ -518,29 +210,6 @@ def execute_ITYPE_pure64 (imm : (BitVec 12)) (rs1_val : (BitVec 64)) (op : iop) 
     | iop.RISCV_XORI => rs1_val ^^^ immext
 
 
-/-
-def execute_ZICOND_RTYPE (arg0 : (BitVec 5)) (arg1 : (BitVec 5)) (arg2 : (BitVec 5)) (arg3 : zicondop) : SailM Retired := do
-  let merge_var := (arg0, arg1, arg2, arg3)
-  match merge_var with
-  | (rs2, rs1, rd, RISCV_CZERO_EQZ) =>
-    let value ← do (rX_bits rs1)
-    let condition ← do (rX_bits rs2)
-    let result : xlenbits :=
-      if (BEq.beq condition (zeros_implicit (n := ((2 ^i 3) *i 8))))
-      then (zeros_implicit (n := ((2 ^i 3) *i 8)))
-      else value
-    (wX_bits rd result)
-    (pure RETIRE_SUCCESS)
-  | (rs2, rs1, rd, RISCV_CZERO_NEZ) =>
-    let value ← do (rX_bits rs1)
-    let condition ← do (rX_bits rs2)
-    let result : xlenbits :=
-      if (bne condition (zeros_implicit (n := ((2 ^i 3) *i 8))))
-      then (zeros_implicit (n := ((2 ^i 3) *i 8)))
-      else value
-    (wX_bits rd result)
-    (pure RETIRE_SUCCESS)
--/
 -- purified
 -- to do: ask if its valid to just match on op only and assume valid regs
 def execute_ZICOND_RTYPE_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) (arg3 : zicondop) : BitVec 64 :=
@@ -562,38 +231,6 @@ def execute_ZICOND_RTYPE_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) 
       then (zeros_implicit (n := ((2 ^i 3) *i 8)))
       else value
     result
--- ZBA speeds up address transaltion and indexing into an array while ZBA is for basic bit manipulation
---ZBA speeds up pointer arithemtic while ZBB basic bit manipulation
-/-
-def execute_ZBB_RTYPEW (rs2 : (BitVec 5)) (rs1 : (BitVec 5)) (rd : (BitVec 5)) (op : bropw_zbb) : SailM Retired := do
-  let rs1_val ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs1)) 31 0))
-  let shamt ← do (pure (Sail.BitVec.extractLsb (← (rX_bits rs2)) 4 0))
-  let result : (BitVec 32) :=
-    match op with
-    | RISCV_ROLW => (rotate_bits_left rs1_val shamt)
-    | RISCV_RORW => (rotate_bits_right rs1_val shamt)
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) result)) -- ^is a macro power -> sign extends to 64 bits
-  (pure RETIRE_SUCCESS)
--/
---ZBS are single bit instructions
-
-
-/-def execute_ZBS_RTYPE (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zbs) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let mask : xlenbits :=
-    (shift_bits_left (zero_extend (m := ((2 ^i 3) *i 8)) (0b1 : (BitVec 1)))
-      (Sail.BitVec.extractLsb rs2_val 5 0))
-  let result : xlenbits :=
-    match op with
-    | RISCV_BCLR => (rs1_val &&& (Complement.complement mask))
-    | RISCV_BEXT =>
-      (zero_extend (m := ((2 ^i 3) *i 8))
-        (bool_to_bits (bne (rs1_val &&& mask) (zeros_implicit (n := ((2 ^i 3) *i 8))))))
-    | RISCV_BINV => (rs1_val ^^^ mask)
-    | RISCV_BSET => (rs1_val ||| mask)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
 
 def execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : brop_zbs) : BitVec 64 :=
   let mask : xlenbits :=
@@ -609,22 +246,6 @@ def execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : b
     | .RISCV_BSET => (rs1_val ||| mask)
   result
 
---def execute_ZBS_IOP
-/-def execute_ZBS_IOP (shamt : (BitVec 6)) (rs1 : regidx) (rd : regidx) (op : biop_zbs) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let mask : xlenbits :=
-    (shift_bits_left (zero_extend (m := ((2 ^i 3) *i 8)) (0b1 : (BitVec 1))) shamt)
-  let result : xlenbits :=
-    match op with
-    | RISCV_BCLRI => (rs1_val &&& (Complement.complement mask))
-    | RISCV_BEXTI =>
-      (zero_extend (m := ((2 ^i 3) *i 8))
-        (bool_to_bits (bne (rs1_val &&& mask) (zeros_implicit (n := ((2 ^i 3) *i 8))))))
-    | RISCV_BINVI => (rs1_val ^^^ mask)
-    | RISCV_BSETI => (rs1_val ||| mask)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
-
   def execute_ZBS_IOP_pure64 (shamt : (BitVec 6)) (rs1_val : BitVec 64) (op : biop_zbs) : BitVec 64 :=
   let mask : xlenbits :=
     (shift_bits_left (zero_extend (m := ((2 ^i 3) *i 8)) (0b1 : (BitVec 1))) shamt)
@@ -638,21 +259,6 @@ def execute_ZBS_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : b
     | .RISCV_BSETI => (rs1_val ||| mask)
   result
 
---def execute_ZBKB_RTYPE
-/-def execute_ZBKB_RTYPE (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zbkb) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let result : xlenbits :=
-    match op with
-    | RISCV_PACK =>
-      ((Sail.BitVec.extractLsb rs2_val ((xlen_bytes *i 4) -i 1) 0) ++ (Sail.BitVec.extractLsb
-          rs1_val ((xlen_bytes *i 4) -i 1) 0))
-    | RISCV_PACKH =>
-      (zero_extend (m := ((2 ^i 3) *i 8))
-        ((Sail.BitVec.extractLsb rs2_val 7 0) ++ (Sail.BitVec.extractLsb rs1_val 7 0)))
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
-
 -- to do didnt extract it to bit vec domain so far
 def execute_ZBKB_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : brop_zbkb) : BitVec 64 :=
     match op with
@@ -663,25 +269,6 @@ def execute_ZBKB_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : 
       (zero_extend (m := ((2 ^i 3) *i 8))
         ((Sail.BitVec.extractLsb rs2_val 7 0) ++ (Sail.BitVec.extractLsb rs1_val 7 0)))
 
-
---def execute_ZBKB_PACKW
-/-def execute_ZBKB_PACKW (rs2 : regidx) (rs1 : regidx) (rd : regidx) : SailM Retired := do
-  assert (BEq.beq xlen 64) "riscv_insts_zbkb.sail:47.19-47.20"
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let result : (BitVec 32) :=
-    ((Sail.BitVec.extractLsb rs2_val 15 0) ++ (Sail.BitVec.extractLsb rs1_val 15 0))
-  (wX_bits rd (sign_extend (m := ((2 ^i 3) *i 8)) result))
-  (pure RETIRE_SUCCESS)-/
-
--- TO DO, handle assertions that returns type of SailMonad
-/-def execute_ZBKB_PACKW_pure64 (rs2 : BitVec 64) (rs1 : BitVec 64) : BitVec 64 :=
-  assert (BEq.beq Functions.xlen 64) "riscv_insts_zbkb.sail:47.19-47.20"
-  let result : (BitVec 32) :=
-    ((Sail.BitVec.extractLsb rs2_val 15 0) ++ (Sail.BitVec.extractLsb rs1_val 15 0))
-  (sign_extend (m := ((2 ^i 3) *i 8)) result)-/
-
-
 def execute_ZBB_RTYPEW_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) (op : bropw_zbb) : BitVec 64 :=
   let shamt := Sail.BitVec.extractLsb (rs2_val) 4 0
   let result : (BitVec 32) :=
@@ -690,16 +277,6 @@ def execute_ZBB_RTYPEW_pure64 (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) (o
     | bropw_zbb.RISCV_RORW => (rotate_bits_right rs1_val shamt)
   sign_extend (m := ((2 ^i 3) *i 8)) result
 
-/-def execute_ZBB_EXTOP (rs1 : regidx) (rd : regidx) (op : extop_zbb) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let result : xlenbits :=
-    match op with
-    | RISCV_SEXTB => (sign_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 7 0))
-    | RISCV_SEXTH => (sign_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 15 0))
-    | RISCV_ZEXTH => (zero_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 15 0))
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
-
 -- works one least significant bits and sign or zero extends them
 def execute_ZBB_EXTOP_pure64 (rs1_val : BitVec 64) (op : extop_zbb) : BitVec 64 :=
     match op with
@@ -707,20 +284,6 @@ def execute_ZBB_EXTOP_pure64 (rs1_val : BitVec 64) (op : extop_zbb) : BitVec 64 
     | .RISCV_SEXTH => (sign_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 15 0)) --sign extends halfword (16 bits)
     | .RISCV_ZEXTH => (zero_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 15 0)) --zero extends halfword (16 bits)
 
-/-def execute_ZBA_RTYPEUW (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : bropw_zba) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let shamt : (BitVec 2) :=
-    match op with
-    | RISCV_ADDUW => (0b00 : (BitVec 2))
-    | RISCV_SH1ADDUW => (0b01 : (BitVec 2))
-    | RISCV_SH2ADDUW => (0b10 : (BitVec 2))
-    | RISCV_SH3ADDUW => (0b11 : (BitVec 2))
-  let result : xlenbits :=
-    ((shift_bits_left (zero_extend (m := ((2 ^i 3) *i 8)) (Sail.BitVec.extractLsb rs1_val 31 0))
-        shamt) + rs2_val)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
 
 -- operations on unsigned words
 def execute_ZBA_RTYPEUW_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : bropw_zba) : BitVec 64 :=
@@ -735,20 +298,6 @@ def execute_ZBA_RTYPEUW_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op :
         shamt) + rs2_val) -- left shift by shamt and then add
   result
 
---def execute_ZBA_RTYPE
-/-
-def execute_ZBA_RTYPE (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zba) : SailM Retired := do
-  let rs1_val ← do (rX_bits rs1)
-  let rs2_val ← do (rX_bits rs2)
-  let shamt : (BitVec 2) :=
-    match op with
-    | RISCV_SH1ADD => (0b01 : (BitVec 2))
-    | RISCV_SH2ADD => (0b10 : (BitVec 2))
-    | RISCV_SH3ADD => (0b11 : (BitVec 2))
-  let result : xlenbits := ((shift_bits_left rs1_val shamt) + rs2_val)
-  (wX_bits rd result)
-  (pure RETIRE_SUCCESS)-/
-
 def execute_ZBA_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : brop_zba) : BitVec 64 :=
   let shamt : (BitVec 2) :=
     match op with
@@ -757,5 +306,22 @@ def execute_ZBA_RTYPE_pure64 (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : b
     | .RISCV_SH3ADD => (0b11 : (BitVec 2))
   let result : xlenbits := ((shift_bits_left rs1_val shamt) + rs2_val)
   result
+
+
+def execute_ZBB_RTYPE_pure (rs2_val : BitVec 64) (rs1_val : BitVec 64) (op : brop_zbb) : BitVec 64 :=
+   let result : xlenbits :=
+    match op with
+    | .RISCV_ANDN => (rs1_val &&& (Complement.complement rs2_val))
+    | .RISCV_ORN => (rs1_val ||| (Complement.complement rs2_val))
+    | .RISCV_XNOR => (Complement.complement (rs1_val ^^^ rs2_val))
+    | .RISCV_MAX => (to_bits 64 (Max.max (BitVec.toInt rs1_val) (BitVec.toInt rs2_val)))
+    | .RISCV_MAXU => (to_bits 64 (Max.max (BitVec.toNat rs1_val) (BitVec.toNat rs2_val)))
+    | .RISCV_MIN => (to_bits 64 (Min.min (BitVec.toInt rs1_val) (BitVec.toInt rs2_val)))
+    | .RISCV_MINU => (to_bits 64 (Min.min (BitVec.toNat rs1_val) (BitVec.toNat rs2_val)))
+    | .RISCV_ROL => (rotate_bits_left rs1_val (Sail.BitVec.extractLsb rs2_val 5 0))
+    | .RISCV_ROR => (rotate_bits_right rs1_val (Sail.BitVec.extractLsb rs2_val 5 0))
+  result
+
+
 
 end PureFunctions

@@ -6,26 +6,19 @@ import LeanRV64DLEAN.RiscvExtras
 -- added the imports bellow, had to move pure_func to the library folder
 import LeanRV64DLEAN
 import LeanRV64DLEAN.pure_func
-
 set_option maxRecDepth 10_000
 set_option maxHeartbeats 1_000_000_000
 set_option match.ignoreUnusedAlts true
-
 open Functions
 open Retired
 open Sail
 open PureFunctions
 
---example execute_MUL rs2 rs1 rd mul_op  = skeleton2 rs2 rs1 (fun val1 val2 => execute_MUL_pure val1 val2 mulop ) := by
+/-
+proofs: pure functions executed using the skeleton <-> untouched execution semantics in the LeanRV64DLEAN
+to do: write some proof automation, tactic to do the proofs.
+-/
 
-  /- def skeleton (rs2 : BitVec 5) (rs1 : BitVec 5) (rd : BitVec 5) (op : BitVec 32 → BitVec 32 → BitVec 32) : SailM Retired := do
-  let rs1_val ← rX_bits rs1
-  let rs2_val ← rX_bits rs2
-  let result := op rs1_val rs2_val
-  wX_bits rd result
-  pure RETIRE_SUCCESS -/
-
- -- regidx is of type BitVec
 def skeleton_binary  (rs2 : regidx) (rs1 : regidx) (rd : regidx) (execute_func : BitVec 64 → BitVec 64 → BitVec 64) : SailM Retired := do
   let rs1_val ← rX_bits rs1
   let rs2_val ← rX_bits rs2
@@ -82,22 +75,6 @@ theorem utype_eq_AUIPC (imm : (BitVec 20)) (rd : regidx):
     unfold Functions.execute_UTYPE skeleton_UTYPE_AUIPC execute_UTYPE_pure64
     simp only [Nat.reducePow, Nat.reduceMul, Nat.reduceAdd, BitVec.ofNat_eq_ofNat, bind_pure_comp,
       bind_map_left, BitVec.add_eq]
-
-/-
-theorem ignore_pc (x: SailM (BitVec 64)) :
-  let pc ← get_arch_pc ();
-  (fun a => RETIRE_SUCCESS) <$> wX_bits rd (sign_extend ((imm : (BitVec 20))  ++ 0#12)) =
-  (fun a => RETIRE_SUCCESS) <$> wX_bits rd (sign_extend ((imm : (BitVec 20)) ++ 0#12)) :=
-    by simp
--/
---#print StateT
---#check (Functions.execute_UTYPE ?imm ?rd ?f : _ → _)
-
---def SailM := Nat → Nat
-
---def f : NatFun :=
-  --fun a => a
---(h: Register.PC = Some s ) (h: Register.PC == Some s )
 
 theorem utype_eq (imm : (BitVec 20)) (rd : regidx) (op : uop) (h_pc : s.regs.get? Register.PC = some valt):
     Functions.execute_UTYPE imm rd op s
@@ -254,28 +231,22 @@ theorem zba_rtype_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zba)
   unfold Functions.execute_ZBA_RTYPE skeleton_binary execute_ZBA_RTYPE_pure64
   rfl
 
+theorem zbb_rtype_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : brop_zbb) :
+    Functions.execute_ZBB_RTYPE (rs2) (rs1) (rd) (op)
+    = skeleton_binary rs2 rs1 rd (fun val1 val2 => execute_ZBB_RTYPE_pure val2 val1 op)
+  := by
+  unfold Functions.execute_ZBB_RTYPE skeleton_binary execute_ZBB_RTYPE_pure
+  rfl
 
-example (p q : Prop) : p ∨ q → q ∨ p := by
-  intro h
-  cases h with
-  | inr hq => apply Or.inl; exact hq
-  | inl hp => apply Or.inr; exact hp
-
-
-
---example proof attempt
 /-example :
+--example proof attempt
   execute_ZBB_RTYPEW rs2 rs1 rd op = skeleton rs2 rs1 rd (execute_ZBB_RTYPEW_pure32):= by
   sorry --[TO DO ]
 
 from pairing with alex
 --theorem rX_bits_eq (rX : BitVec 5) : rX_bits rX = regval_from_reg <$> _ := by -- (readReg <| Register.ofBitVec rX) := by
   --simp [rX_bits, Functions.rX]
-
-
 example execute_MUL rs2 rs1 rd mul_op  = skeleton2 rs2 rs1 (fun val1 val2 => execute_MUL_pure val1 val2 mulop ) := by
   sorry
-
 example executeADD rs2 rs1 rd addOP = skeleton2 rs2 rs1 (λ val1 val2 . executeAddPure val1 val2 addOp)
-
 -/

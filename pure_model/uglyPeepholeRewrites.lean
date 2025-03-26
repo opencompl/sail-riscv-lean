@@ -12,6 +12,10 @@ open Retired
 open Sail
 open PureFunctions
 
+
+-- SOME INITIAL UGLY PROOFS ABOUT SIMPLE PEEPHOLE REWRITES WITHOUT USING AUTOMATION AND MY GENERAL MODELL :
+
+
 -- @[simp]
 theorem extractLsb'_extractLsb' :
     BitVec.extractLsb' start length (BitVec.extractLsb' start' length' x)
@@ -51,8 +55,6 @@ theorem add_set_Width (x : BitVec w1) (y : BitVec w2) :
     BitVec.add x y =  x + y  := by
       simp [HAdd.hAdd]
 
-
--- SOME INITIAL UGLY PROOFS ABOUT SIMPLE PEEPHOLE REWRITES WITHOUT USING AUTOMATION AND MY GENERAL MODELL :
 
  --  MUL 0 rs1 rd = 0
 theorem zero_MUL :  execute_MUL_pure64 { high := false, signed_rs1 := false, signed_rs2 := false } 0#64 (reg1 : BitVec 64) = 0#64 := by
