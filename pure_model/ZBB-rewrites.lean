@@ -3,7 +3,6 @@ import LeanRV64DLEAN.Sail.BitVec
 import LeanRV64DLEAN.Defs
 import LeanRV64DLEAN.Specialization
 import LeanRV64DLEAN.RiscvExtras
--- added the imports bellow, had to move pure_func to the library folder
 import LeanRV64DLEAN
 import LeanRV64DLEAN.pure_func
 
@@ -12,7 +11,15 @@ open Retired
 open Sail
 open PureFunctions
 
----- ZBB extensions extraction to pure bit vectors
+/-!
+## Content
+This file contains the rewrites from the pure function corrresponding to`ZBB extension` instruction semantics
+into a bit-vector only representation.
+
+This BitVec representation is used in the `RISCV64` dialect in `Lean-MLIR` project to define the semantics
+of the corresponding RISC-V operations.
+-/
+
 
 theorem execute_ZBB_RTYPEW_pure64_RISCV_ROLW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
   execute_ZBB_RTYPEW_pure64 rs2_val rs1_val bropw_zbb.RISCV_ROLW
@@ -41,8 +48,7 @@ theorem execute_ZBB_RTYPEW_pure64_RISCV_RORW(rs2_val : BitVec 64) (rs1_val : Bit
     simp
     rfl
 
-    --unfold HOr.hOr instHOrBitVec_leanRV64DLEAN
-    --simp
+
 
 -- extract byte or halfwords and either sign or zero extend it
 theorem execute_ZBB_EXTOP_pure64_RISCV_SEXTB (rs1_val : BitVec 64) :
@@ -79,3 +85,11 @@ theorem execute_ZBB_RTYPE_pure_RISCV_ROR (rs2_val : BitVec 64) (rs1_val : BitVec
   simp
   unfold rotate_bits_right Sail.BitVec.extractLsb shift_bits_left to_bits get_slice_int shift_bits_right BitVec.length
   rfl
+
+/-
+missing : -> part if ZBB_RTYPE
+inductive brop_zbb where | RISCV_ANDN | RISCV_ORN | RISCV_XNOR
+ | RISCV_MAX | RISCV_MAXU | RISCV_MIN | RISCV_MINU | RISCV_ROL | RISCV_ROR
+  deriving Inhabited, BEq
+
+-/

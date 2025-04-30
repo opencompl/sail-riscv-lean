@@ -127,7 +127,6 @@ theorem rtype_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (op : rop) :
   cases op
   <;> simp
 
-
 theorem remw_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (s : Bool) :
     Functions.execute_REMW (rs2) (rs1) (rd) (s)
       = skeleton_binary rs2 rs1 rd (fun val1 val2 => execute_REMW_pure64 s val2 val1)
@@ -155,6 +154,8 @@ theorem mul_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (mul_op : mul_op) :
   := by
   unfold Functions.execute_MUL skeleton_binary execute_MUL_pure64
   rfl
+
+#eval  execute_MUL_pure64 (mul_op := { high := False, signed_rs1:= False, signed_rs2 := False }) (1#64) (99#64)
 
 theorem divw_eq (rs2 : regidx) (rs1 : regidx) (rd : regidx) (s : Bool) :
     Functions.execute_DIVW (rs2 ) (rs1) (rd) (s)

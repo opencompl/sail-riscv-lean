@@ -151,6 +151,34 @@ def execute_MUL_pure64 (mul_op : mul_op) (rs2_val : (BitVec 64)) (rs1_val : (Bit
     else (Sail.BitVec.extractLsb result_wide (Functions.xlen -i 1) 0)
   result
 
+def x := BitVec.ofInt 64 (-1)
+#eval  execute_MUL_pure64 (mul_op := { high := False, signed_rs1:= False, signed_rs2 := False }) (x) (99#64)
+#eval  execute_MUL_pure64 (mul_op := { high := False, signed_rs1:= True, signed_rs2 := True }) (1#64) (99#64)
+-- rewrite into BitVec.operation function
+
+theorem Mul_eq_MUL_bitvec  (mul_op : mul_op) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) :
+  execute_MUL_pure64  (mul_op ) (rs2_val ) (rs1_val ) =
+        let rs1_int : Int :=
+        if mul_op.signed_rs1 -- if signed then modell as integer operation
+        then (BitVec.toInt rs1_val)
+        else (BitVec.toNat rs1_val)
+      let rs2_int : Int :=
+        if mul_op.signed_rs2
+        then (BitVec.toInt rs2_val)
+        else (BitVec.toNat rs2_val)
+      let result_wide := (to_bits (2 * Functions.xlen) (rs1_int * rs2_int)) --adapt result vector width to 2^(exp1 + exp2)
+      let result :=
+        if mul_op.high -- if set return the higher xlen bits else the lower
+        then (Sail.BitVec.extractLsb result_wide ((2 * Functions.xlen) -i 1) Functions.xlen) --return either higher or lower xlen bits
+        else (Sail.BitVec.extractLsb result_wide (Functions.xlen -i 1) 0)
+      result
+    := by rfl
+
+#check BitVec.mul
+/-
+protected def mul (x y : BitVec n) : BitVec n := BitVec.ofNat n (x.toNat * y.toNat)
+instance : Mul (BitVec n) := ⟨.mul⟩
+-/
 
 -- purified
 def execute_DIVW_pure64 (s : Bool) (rs2_val : (BitVec 64)) (rs1_val : (BitVec 64)) : BitVec 64 :=

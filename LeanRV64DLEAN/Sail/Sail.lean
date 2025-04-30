@@ -153,8 +153,8 @@ def toHexUpper (i : Int) : String :=
   | Int.negSucc n => "-" ++ Nat.toHexUpper (n+1)
 
 end Int
-
-def get_slice_int (len n lo : Nat) : BitVec len :=
+-- def get_slice_int (len n lo : Nat) (n : Int) : BitVec len :=
+def get_slice_int (len lo : Nat) (n : Int) : BitVec len :=
   BitVec.extractLsb' lo len (BitVec.ofInt (lo + len + 1) n)
 
 def set_slice_int (len n lo : Nat) (x : BitVec len) : Int :=

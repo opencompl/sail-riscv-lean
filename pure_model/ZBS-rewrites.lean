@@ -9,8 +9,15 @@ open Functions
 open Retired
 open Sail
 open PureFunctions
+/-!
+## Content
+This file contains the rewrites from the pure function corrresponding to`ZBS extension` instruction semantics
+into a bit-vector only representation.
 
- -- ZBS extension is extension for single-bit operations
+This BitVec representation is used in the `RISCV64` dialect in `Lean-MLIR` project to define the semantics
+of the corresponding RISC-V operations.
+-/
+
 
  theorem execute_ZBS_RTYPE_pure64_RISCV_BCLR (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
       execute_ZBS_RTYPE_pure64 rs2_val rs1_val  brop_zbs.RISCV_BCLR
@@ -55,12 +62,9 @@ theorem execute_ZBS_RTYPE_pure64_RISCV_BSET (rs2_val : BitVec 64) (rs1_val : Bit
   simp only [BitVec.truncate_eq_setWidth, BitVec.shiftLeft_eq', Nat.sub_zero, Nat.reduceAdd,
     BitVec.extractLsb_toNat, Nat.shiftRight_zero, Nat.reducePow]
   unfold HPow.hPow instHPowInt_leanRV64DLEAN
-  bv_decide
-  --rfl, works by using either bv_decide or rfl
-  --bv_decide
+  bv_decide -- or using rfl works to.
 
 
---execute_ZBS_IOP_pure64
 theorem execute_ZBS_IOP_pure64_RISCV_BCLRI (shamt : BitVec 6) (rs1_val : BitVec 64) :
   execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BCLRI
   = BitVec.and rs1_val (BitVec.not (BitVec.shiftLeft (BitVec.setWidth 64 1#1) (shamt.toNat))):= by --rfl would also work
@@ -85,6 +89,3 @@ theorem execute_ZBS_IOP_pure64_RISCV_BINVI (shamt : BitVec 6) (rs1_val : BitVec 
 theorem execute_ZBS_IOP_pure64_RISCV_BSETI (shamt : BitVec 6) (rs1_val : BitVec 64) :
   execute_ZBS_IOP_pure64 shamt rs1_val biop_zbs.RISCV_BSETI
   = BitVec.or rs1_val (BitVec.shiftLeft (BitVec.zeroExtend 64 1#1) shamt.toNat) := by rfl
-    --unfold PureFunctions.execute_ZBS_IOP_pure64
-    --simp
-    --unfold shift_bits_left zero_extend Sail.BitVec.zeroExtend

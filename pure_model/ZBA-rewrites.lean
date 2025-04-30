@@ -12,7 +12,15 @@ open Retired
 open Sail
 open PureFunctions
 
--- ZBA extensions extraction to pure bit vectors 
+/-!
+## Content
+This file contains the rewrites from the pure function corrresponding to`ZBA extension` instruction semantics
+into a bit-vector only representation.
+
+This BitVec representation is used in the `RISCV64` dialect in `Lean-MLIR` project to define the semantics
+of the corresponding RISC-V operations.
+-/
+
 
 -- shifts unsigned word by some specifc amount and adds rs2_val
 theorem execute_ZBA_RTYPEUW_pure64_RISCV_ADDUW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
@@ -27,7 +35,7 @@ theorem execute_ZBA_RTYPEUW_pure64_RISCV_ADDUW (rs2_val : BitVec 64) (rs1_val : 
 
 theorem execute_ZBA_RTYPEUW_pure64_RISCV_SH1ADDUW (rs2_val : BitVec 64) (rs1_val : BitVec 64) :
     execute_ZBA_RTYPEUW_pure64 rs2_val rs1_val bropw_zba.RISCV_SH1ADDUW
-      = BitVec.zeroExtend (Int.toNat 64) (BitVec.extractLsb 31 0 rs1_val) <<< 1#2 + rs2_val
+      = BitVec.add (BitVec.zeroExtend (Int.toNat 64) (BitVec.extractLsb 31 0 rs1_val) <<< 1#2)  (rs2_val)
   := by
   unfold execute_ZBA_RTYPEUW_pure64
   simp
