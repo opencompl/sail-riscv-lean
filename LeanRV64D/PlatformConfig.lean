@@ -1449,7 +1449,7 @@ def itype_mnemonic_forwards (arg_ : iop) : String :=
   | .ORI => "ori"
   | .ANDI => "andi"
 
-/-- Type quantifiers: k_ex1287928_ : Bool -/
+/-- Type quantifiers: k_ex1288072_ : Bool -/
 def maybe_u_forwards (arg_ : Bool) : String :=
   match arg_ with
   | true => "u"
@@ -2939,7 +2939,8 @@ def assembly_forwards (arg_ : instruction) : SailM String := do
     (pure (String.append (f_un_type_mnemonic_x_S_forwards op)
         (String.append (spc_forwards ())
           (String.append (← (reg_name_forwards rd))
-            (String.append (sep_forwards ()) (String.append (← (freg_name_forwards rs1)) ""))))))
+            (String.append (sep_forwards ())
+              (String.append (← (freg_or_reg_name_forwards rs1)) ""))))))
   | .F_UN_TYPE_F_S (rs1, rd, op) =>
     (pure (String.append (f_un_type_mnemonic_f_S_forwards op)
         (String.append (spc_forwards ())
@@ -3067,7 +3068,8 @@ def assembly_forwards (arg_ : instruction) : SailM String := do
     (pure (String.append (f_un_x_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
           (String.append (← (reg_name_forwards rd))
-            (String.append (sep_forwards ()) (String.append (← (freg_name_forwards rs1)) ""))))))
+            (String.append (sep_forwards ())
+              (String.append (← (freg_or_reg_name_forwards rs1)) ""))))))
   | .F_UN_F_TYPE_D (rs1, rd, op) =>
     (pure (String.append (f_un_f_type_mnemonic_D_forwards op)
         (String.append (spc_forwards ())
@@ -3172,7 +3174,8 @@ def assembly_forwards (arg_ : instruction) : SailM String := do
     (pure (String.append (f_un_x_type_mnemonic_H_forwards op)
         (String.append (spc_forwards ())
           (String.append (← (reg_name_forwards rd))
-            (String.append (sep_forwards ()) (String.append (← (freg_name_forwards rs1)) ""))))))
+            (String.append (sep_forwards ())
+              (String.append (← (freg_or_reg_name_forwards rs1)) ""))))))
   | .FLI_H (constantidx, rd) =>
     (pure (String.append "fli.h"
         (String.append (spc_forwards ())
@@ -6655,7 +6658,7 @@ def lrsc_width_valid (width : Nat) : Bool :=
 def validDoubleRegs {n : _} (regs : (Vector fregidx n)) : Bool :=
   true
 
-/-- Type quantifiers: k_ex1289310_ : Bool, width : Nat, width ∈ {1, 2, 4, 8} -/
+/-- Type quantifiers: k_ex1289454_ : Bool, width : Nat, width ∈ {1, 2, 4, 8} -/
 def valid_load_encdec (width : Nat) (is_unsigned : Bool) : Bool :=
   ((width <b xlen_bytes) || ((not is_unsigned) && (width ≤b xlen_bytes)))
 
