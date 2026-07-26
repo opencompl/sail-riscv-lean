@@ -629,7 +629,7 @@ def undefined_pma_check_opts (_ : Unit) : SailM pma_check_opts := do
           ssccptr := ← (undefined_bool ())
           svadu := ← (undefined_bool ()) })
 
-/-- Type quantifiers: k_ex1290050_ : Bool -/
+/-- Type quantifiers: k_ex1290071_ : Bool -/
 def check_pma_regions (regions : (List PMA_Region)) (prev_base : (BitVec 64)) (prev_size : (BitVec 64)) (check_opts : pma_check_opts) (found_valid_svadu_pma : Bool) : Bool := ExceptM.run do
   match regions with
   | [] =>
@@ -678,7 +678,7 @@ def check_pma_regions (regions : (List PMA_Region)) (prev_base : (BitVec 64)) (p
                   then
                     (do
                       let mag := attributes.misaligned_atomicity_granule_size_exp
-                      if ((check_opts.zama16b && (mag != 4)) : Bool)
+                      if ((check_opts.zama16b && (mag <b 4)) : Bool)
                       then
                         throw (let _ : Unit :=
                             (print_endline
@@ -691,7 +691,7 @@ def check_pma_regions (regions : (List PMA_Region)) (prev_base : (BitVec 64)) (p
                                       else
                                         (HAppend.hAppend "a misaligned atomicity granule size of 2^"
                                           (Int.repr mag)))
-                                      ", but Zama16b is enabled which requires granule size of 2^4 bytes.")))))
+                                      ", but Zama16b is enabled which requires granule size of at least 2^4 bytes.")))))
                           false : Bool)
                       else
                         (do
@@ -872,7 +872,7 @@ def check_pmp (_ : Unit) : Bool :=
     valid)
   else valid
 
-/-- Type quantifiers: k_ex1290051_ : Bool -/
+/-- Type quantifiers: k_ex1290072_ : Bool -/
 def check_required_sstvala_option (name : String) (value : Bool) : Bool :=
   if ((not value) : Bool)
   then

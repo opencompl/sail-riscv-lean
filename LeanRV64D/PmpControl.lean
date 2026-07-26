@@ -332,16 +332,38 @@ def pmpCheck (addr : physaddr) (width : Nat) (access : (MemoryAccessType mem_pay
           | .PMP_NoMatch => (pure ())
           | .PMP_PartialMatch =>
             SailME.throw (← do
+                let _ : Unit :=
+                  if ((get_config_print_pmp ()) : Bool)
+                  then
+                    (print_endline
+                      (HAppend.hAppend "PMP check failed with a partial match at entry #"
+                        (HAppend.hAppend (Int.repr i) ".")))
+                  else ()
                 (pure (some (← (accessFaultFromAccessType access)))))
           | .PMP_Match =>
             SailME.throw (← do
                 if (((← (pmpCheckRWX cfg access)) || ((priv == Machine) && (not (pmpLocked cfg)))) : Bool)
                 then (pure none)
-                else (pure (some (← (accessFaultFromAccessType access)))))
+                else
+                  (do
+                    let _ : Unit :=
+                      if ((get_config_print_pmp ()) : Bool)
+                      then
+                        (print_endline
+                          (HAppend.hAppend "PMP check failed at matching entry #"
+                            (HAppend.hAppend (Int.repr i) ".")))
+                      else ()
+                    (pure (some (← (accessFaultFromAccessType access))))))
       (pure loop_vars)
       if ((priv == Machine) : Bool)
       then (pure none)
-      else (pure (some (← (accessFaultFromAccessType access)))))
+      else
+        (do
+          let _ : Unit :=
+            if ((get_config_print_pmp ()) : Bool)
+            then (print_endline "PMP check failed with no matching entry.")
+            else ()
+          (pure (some (← (accessFaultFromAccessType access))))))
 
 def reset_pmp (_ : Unit) : SailM Unit := do
   let loop_i_lower := 0
