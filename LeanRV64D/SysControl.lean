@@ -596,8 +596,8 @@ def getPendingSet (priv : Privilege) : SailM (Option ((BitVec 64) × Privilege))
     else (pure (zeros (n := 64)))
   let mip_bits ← do (read_mip IncludePlatformInterrupts)
   let pending_m ← do
-    (pure (mip_bits &&& ((← readReg mie) &&& (Complement.complement (← readReg mideleg)))))
-  let pending_s ← do (pure (mip_bits &&& ((← readReg mie) &&& (← readReg mideleg))))
+    (pure (mip_bits &&& ((← readReg mie) &&& (Complement.complement mideleg_bits))))
+  let pending_s ← do (pure (mip_bits &&& ((← readReg mie) &&& mideleg_bits)))
   let mIE ← do
     (pure (((priv == Machine) && ((_get_Mstatus_MIE (← readReg mstatus)) == 1#1)) || ((priv == Supervisor) || (priv == User))))
   let sIE ← do
