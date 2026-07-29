@@ -246,9 +246,19 @@ def _get_Minterrupts_MEI (v : (BitVec 64)) : (BitVec 1) :=
 def _update_Minterrupts_MEI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
   (Sail.BitVec.updateSubrange v 11 11 x)
 
+def _update_Sinterrupts_MEI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
+  (Sail.BitVec.updateSubrange v 11 11 x)
+
 def _set_Minterrupts_MEI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
   let r ← do (reg_deref r_ref)
   writeRegRef r_ref (_update_Minterrupts_MEI r v)
+
+def _get_Sinterrupts_MEI (v : (BitVec 64)) : (BitVec 1) :=
+  (Sail.BitVec.extractLsb v 11 11)
+
+def _set_Sinterrupts_MEI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
+  let r ← do (reg_deref r_ref)
+  writeRegRef r_ref (_update_Sinterrupts_MEI r v)
 
 def _get_Minterrupts_MSI (v : (BitVec 64)) : (BitVec 1) :=
   (Sail.BitVec.extractLsb v 3 3)
@@ -256,9 +266,19 @@ def _get_Minterrupts_MSI (v : (BitVec 64)) : (BitVec 1) :=
 def _update_Minterrupts_MSI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
   (Sail.BitVec.updateSubrange v 3 3 x)
 
+def _update_Sinterrupts_MSI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
+  (Sail.BitVec.updateSubrange v 3 3 x)
+
 def _set_Minterrupts_MSI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
   let r ← do (reg_deref r_ref)
   writeRegRef r_ref (_update_Minterrupts_MSI r v)
+
+def _get_Sinterrupts_MSI (v : (BitVec 64)) : (BitVec 1) :=
+  (Sail.BitVec.extractLsb v 3 3)
+
+def _set_Sinterrupts_MSI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
+  let r ← do (reg_deref r_ref)
+  writeRegRef r_ref (_update_Sinterrupts_MSI r v)
 
 def _get_Minterrupts_MTI (v : (BitVec 64)) : (BitVec 1) :=
   (Sail.BitVec.extractLsb v 7 7)
@@ -266,9 +286,19 @@ def _get_Minterrupts_MTI (v : (BitVec 64)) : (BitVec 1) :=
 def _update_Minterrupts_MTI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
   (Sail.BitVec.updateSubrange v 7 7 x)
 
+def _update_Sinterrupts_MTI (v : (BitVec 64)) (x : (BitVec 1)) : (BitVec 64) :=
+  (Sail.BitVec.updateSubrange v 7 7 x)
+
 def _set_Minterrupts_MTI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
   let r ← do (reg_deref r_ref)
   writeRegRef r_ref (_update_Minterrupts_MTI r v)
+
+def _get_Sinterrupts_MTI (v : (BitVec 64)) : (BitVec 1) :=
+  (Sail.BitVec.extractLsb v 7 7)
+
+def _set_Sinterrupts_MTI (r_ref : (RegisterRef (BitVec 64))) (v : (BitVec 1)) : SailM Unit := do
+  let r ← do (reg_deref r_ref)
+  writeRegRef r_ref (_update_Sinterrupts_MTI r v)
 
 def _get_Minterrupts_SEI (v : (BitVec 64)) : (BitVec 1) :=
   (Sail.BitVec.extractLsb v 9 9)
@@ -667,21 +697,35 @@ def Mk_Sinterrupts (v : (BitVec 64)) : (BitVec 64) :=
 def lower_mip (m : (BitVec 64)) (d : (BitVec 64)) : (BitVec 64) :=
   let s : Sinterrupts := (Mk_Sinterrupts (zeros (n := 64)))
   (_update_Sinterrupts_SSI
-    (_update_Sinterrupts_STI
-      (_update_Sinterrupts_SEI
-        (_update_Sinterrupts_LCOFI s ((_get_Minterrupts_LCOFI m) &&& (_get_Minterrupts_LCOFI d)))
-        ((_get_Minterrupts_SEI m) &&& (_get_Minterrupts_SEI d)))
-      ((_get_Minterrupts_STI m) &&& (_get_Minterrupts_STI d)))
+    (_update_Sinterrupts_MSI
+      (_update_Sinterrupts_STI
+        (_update_Sinterrupts_MTI
+          (_update_Sinterrupts_SEI
+            (_update_Sinterrupts_MEI
+              (_update_Sinterrupts_LCOFI s
+                ((_get_Minterrupts_LCOFI m) &&& (_get_Minterrupts_LCOFI d)))
+              ((_get_Minterrupts_MEI m) &&& (_get_Minterrupts_MEI d)))
+            ((_get_Minterrupts_SEI m) &&& (_get_Minterrupts_SEI d)))
+          ((_get_Minterrupts_MTI m) &&& (_get_Minterrupts_MTI d)))
+        ((_get_Minterrupts_STI m) &&& (_get_Minterrupts_STI d)))
+      ((_get_Minterrupts_MSI m) &&& (_get_Minterrupts_MSI d)))
     ((_get_Minterrupts_SSI m) &&& (_get_Minterrupts_SSI d)))
 
 def lower_mie (m : (BitVec 64)) (d : (BitVec 64)) : (BitVec 64) :=
   let s : Sinterrupts := (Mk_Sinterrupts (zeros (n := 64)))
   (_update_Sinterrupts_SSI
-    (_update_Sinterrupts_STI
-      (_update_Sinterrupts_SEI
-        (_update_Sinterrupts_LCOFI s ((_get_Minterrupts_LCOFI m) &&& (_get_Minterrupts_LCOFI d)))
-        ((_get_Minterrupts_SEI m) &&& (_get_Minterrupts_SEI d)))
-      ((_get_Minterrupts_STI m) &&& (_get_Minterrupts_STI d)))
+    (_update_Sinterrupts_MSI
+      (_update_Sinterrupts_STI
+        (_update_Sinterrupts_MTI
+          (_update_Sinterrupts_SEI
+            (_update_Sinterrupts_MEI
+              (_update_Sinterrupts_LCOFI s
+                ((_get_Minterrupts_LCOFI m) &&& (_get_Minterrupts_LCOFI d)))
+              ((_get_Minterrupts_MEI m) &&& (_get_Minterrupts_MEI d)))
+            ((_get_Minterrupts_SEI m) &&& (_get_Minterrupts_SEI d)))
+          ((_get_Minterrupts_MTI m) &&& (_get_Minterrupts_MTI d)))
+        ((_get_Minterrupts_STI m) &&& (_get_Minterrupts_STI d)))
+      ((_get_Minterrupts_MSI m) &&& (_get_Minterrupts_MSI d)))
     ((_get_Minterrupts_SSI m) &&& (_get_Minterrupts_SSI d)))
 
 def lift_sip (o : (BitVec 64)) (d : (BitVec 64)) (s : (BitVec 64)) : (BitVec 64) :=
@@ -706,14 +750,26 @@ def write_sip (value : (BitVec 64)) : SailM Unit := do
 def lift_sie (o : (BitVec 64)) (d : (BitVec 64)) (s : (BitVec 64)) : (BitVec 64) :=
   (_update_Minterrupts_LCOFI
     (_update_Minterrupts_SSI
-      (_update_Minterrupts_STI
-        (_update_Minterrupts_SEI o
-          (if (((_get_Minterrupts_SEI d) == 1#1) : Bool)
-          then (_get_Sinterrupts_SEI s)
-          else (_get_Minterrupts_SEI o)))
-        (if (((_get_Minterrupts_STI d) == 1#1) : Bool)
-        then (_get_Sinterrupts_STI s)
-        else (_get_Minterrupts_STI o)))
+      (_update_Minterrupts_MSI
+        (_update_Minterrupts_STI
+          (_update_Minterrupts_MTI
+            (_update_Minterrupts_SEI
+              (_update_Minterrupts_MEI o
+                (if (((_get_Minterrupts_MEI d) == 1#1) : Bool)
+                then (_get_Sinterrupts_MEI s)
+                else (_get_Minterrupts_MEI o)))
+              (if (((_get_Minterrupts_SEI d) == 1#1) : Bool)
+              then (_get_Sinterrupts_SEI s)
+              else (_get_Minterrupts_SEI o)))
+            (if (((_get_Minterrupts_MTI d) == 1#1) : Bool)
+            then (_get_Sinterrupts_MTI s)
+            else (_get_Minterrupts_MTI o)))
+          (if (((_get_Minterrupts_STI d) == 1#1) : Bool)
+          then (_get_Sinterrupts_STI s)
+          else (_get_Minterrupts_STI o)))
+        (if (((_get_Minterrupts_MSI d) == 1#1) : Bool)
+        then (_get_Sinterrupts_MSI s)
+        else (_get_Minterrupts_MSI o)))
       (if (((_get_Minterrupts_SSI d) == 1#1) : Bool)
       then (_get_Sinterrupts_SSI s)
       else (_get_Minterrupts_SSI o)))

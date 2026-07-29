@@ -341,7 +341,7 @@ def calculate_new_vl (AVL : (BitVec 64)) (VLMAX : Nat) : Nat :=
       else VLMAX)
     else VLMAX)
 
-/-- Type quantifiers: k_ex1290012_ : Bool -/
+/-- Type quantifiers: k_ex1290033_ : Bool -/
 def execute_vsetvl_type (ma : (BitVec 1)) (ta : (BitVec 1)) (sew : (BitVec 3)) (lmul : (BitVec 3)) (avl : (BitVec 64)) (requires_fixed_vlmax : Bool) (rd : regidx) : SailM ExecutionResult := do
   if (((is_invalid_lmul_pow lmul) || (is_invalid_sew_pow sew)) : Bool)
   then (handle_illegal_vtype rd)

@@ -213,11 +213,11 @@ open AtomicSupport
 open Architecture
 open AmocasOddRegisterReservedBehavior
 
-/-- Type quantifiers: k_ex1287623_ : Nat, k_ex1287623_ ∈ {16, 32, 64, 128} -/
-def float_is_positive (op : (BitVec k_ex1287623_)) : Bool :=
+/-- Type quantifiers: k_ex1287644_ : Nat, k_ex1287644_ ∈ {16, 32, 64, 128} -/
+def float_is_positive (op : (BitVec k_ex1287644_)) : Bool :=
   (is_highest_zero op)
 
-/-- Type quantifiers: k_ex1287625_ : Nat, k_ex1287625_ ∈ {16, 32, 64, 128} -/
-def float_is_negative (op : (BitVec k_ex1287625_)) : Bool :=
+/-- Type quantifiers: k_ex1287646_ : Nat, k_ex1287646_ ∈ {16, 32, 64, 128} -/
+def float_is_negative (op : (BitVec k_ex1287646_)) : Bool :=
   (is_highest_one op)
 
