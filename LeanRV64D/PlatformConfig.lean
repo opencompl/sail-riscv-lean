@@ -2857,7 +2857,7 @@ def assembly_forwards (arg_ : instruction) : SailM String := do
     (pure (String.append "fl"
         (String.append (width_mnemonic_forwards width)
           (String.append (spc_forwards ())
-            (String.append (← (freg_or_reg_name_forwards rd))
+            (String.append (← (freg_name_forwards rd))
               (String.append (sep_forwards ())
                 (String.append (← (hex_bits_signed_12_forwards imm))
                   (String.append (opt_spc_forwards ())
