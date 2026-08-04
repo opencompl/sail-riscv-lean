@@ -11924,6 +11924,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -11936,6 +11937,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -12111,6 +12113,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -12123,6 +12126,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -12338,6 +12342,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -12350,6 +12355,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -12505,6 +12511,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -12517,6 +12524,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -12672,6 +12680,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -12684,6 +12693,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -12839,6 +12849,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -12851,6 +12862,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -13066,6 +13078,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -13078,6 +13091,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -13233,6 +13247,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -13245,6 +13260,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -13400,6 +13416,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -13412,6 +13429,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -13567,6 +13585,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -13579,6 +13598,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -13744,6 +13764,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -13754,6 +13775,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -14030,6 +14052,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14042,6 +14065,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -14217,6 +14241,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14229,6 +14254,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -14444,6 +14470,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14456,6 +14483,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -14611,6 +14639,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14623,6 +14652,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -14778,6 +14808,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14790,6 +14821,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -14945,6 +14977,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -14957,6 +14990,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -15172,6 +15206,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -15184,6 +15219,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -15339,6 +15375,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -15351,6 +15388,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -15506,6 +15544,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -15518,6 +15557,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -15673,6 +15713,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -15685,6 +15726,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -15850,6 +15892,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -15860,6 +15903,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -16136,6 +16180,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -16148,6 +16193,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -16323,6 +16369,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -16335,6 +16382,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -16550,6 +16598,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -16562,6 +16611,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -16717,6 +16767,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -16729,6 +16780,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -16884,6 +16936,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -16896,6 +16949,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17051,6 +17105,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -17063,6 +17118,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17278,6 +17334,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -17290,6 +17347,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17445,6 +17503,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -17457,6 +17516,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17612,6 +17672,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -17624,6 +17685,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17779,6 +17841,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -17791,6 +17854,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -17956,6 +18020,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -17966,6 +18031,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -18298,6 +18364,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -18310,6 +18377,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -18485,6 +18553,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -18497,6 +18566,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -18712,6 +18782,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -18724,6 +18795,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -18879,6 +18951,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -18891,6 +18964,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19046,6 +19120,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19058,6 +19133,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19213,6 +19289,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19225,6 +19302,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19440,6 +19518,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19452,6 +19531,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19607,6 +19687,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19619,6 +19700,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19774,6 +19856,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19786,6 +19869,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -19941,6 +20025,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                     (← readReg stimecmp)
                                                                     (xlen -i 1) 0 value)
+                                                                  (clint_dispatch false)
                                                                   (pure (Ok
                                                                       (Sail.BitVec.extractLsb
                                                                         (← readReg stimecmp)
@@ -19953,6 +20038,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                         (← readReg stimecmp) 63 32
                                                                         value)
+                                                                      (clint_dispatch false)
                                                                       (pure (Ok
                                                                           (Sail.BitVec.extractLsb
                                                                             (← readReg stimecmp)
@@ -20118,6 +20204,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -20128,6 +20215,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -20387,6 +20475,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -20397,6 +20486,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -20558,6 +20648,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -20568,6 +20659,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -20764,6 +20856,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -20774,6 +20867,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -20915,6 +21009,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -20925,6 +21020,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21066,6 +21162,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21076,6 +21173,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21217,6 +21315,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21227,6 +21326,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21426,6 +21526,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21436,6 +21537,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21579,6 +21681,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21589,6 +21692,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21732,6 +21836,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21742,6 +21847,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -21885,6 +21991,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                           writeReg stimecmp (Sail.BitVec.updateSubrange
                                                             (← readReg stimecmp) (xlen -i 1) 0
                                                             value)
+                                                          (clint_dispatch false)
                                                           (pure (Ok
                                                               (Sail.BitVec.extractLsb
                                                                 (← readReg stimecmp) (xlen -i 1) 0))))
@@ -21895,6 +22002,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                             (do
                                                               writeReg stimecmp (Sail.BitVec.updateSubrange
                                                                 (← readReg stimecmp) 63 32 value)
+                                                              (clint_dispatch false)
                                                               (pure (Ok
                                                                   (Sail.BitVec.extractLsb
                                                                     (← readReg stimecmp) 63 32))))
@@ -22048,6 +22156,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                 (do
                                                   writeReg stimecmp (Sail.BitVec.updateSubrange
                                                     (← readReg stimecmp) (xlen -i 1) 0 value)
+                                                  (clint_dispatch false)
                                                   (pure (Ok
                                                       (Sail.BitVec.extractLsb (← readReg stimecmp)
                                                         (xlen -i 1) 0))))
@@ -22058,6 +22167,7 @@ def write_CSR (arg0 : (BitVec 12)) (arg1 : (BitVec 64)) : SailM (Result (BitVec 
                                                     (do
                                                       writeReg stimecmp (Sail.BitVec.updateSubrange
                                                         (← readReg stimecmp) 63 32 value)
+                                                      (clint_dispatch false)
                                                       (pure (Ok
                                                           (Sail.BitVec.extractLsb
                                                             (← readReg stimecmp) 63 32))))
