@@ -3,8 +3,6 @@ import LeanRV64D.Defs
 
 namespace LeanRV64D
 
-open Defs
-
 abbrev real := Float
 
 -- val "neg_real" : real -> real

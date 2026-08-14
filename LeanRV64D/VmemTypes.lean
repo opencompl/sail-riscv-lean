@@ -13,7 +13,6 @@ namespace LeanRV64D
 
 open ConcurrencyInterfaceV1
 
-open Defs
 namespace Functions
 
 open zvk_vsm4r_funct6
@@ -282,8 +281,6 @@ def mem_payload_str_forwards_matches (arg_ : mem_payload) : Bool :=
 
 def mem_payload_str_backwards_matches (arg_ : String) : Bool :=
   match arg_ with
-  | "" => true
-  | "" => true
   | "" => true
   | ".ss" => true
   | _ => false

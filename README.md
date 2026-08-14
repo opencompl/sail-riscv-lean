@@ -100,12 +100,19 @@ This work was funded by a grant provided by the [Ethereum Foundation](https://et
 
 # Statistics
 
-Lines: 175,877  
+Lines: 175,711  
 Definitions: 4,779  
 Inductive definitions: 206  
 Abbreviations: 185  
 
 ## Warnings and Errors
 
-Errors found: 0  
+Errors found: 8  
 Warnings found: 0  
+
+### Error Classes
+
+- 5x Function expected at
+- 1x unknown namespace `LeanRV64D.Defs`
+- 1x Lean exited with code 1
+- 1x Field projection operates on types of the form `C ...` where C is a constant. The expression
