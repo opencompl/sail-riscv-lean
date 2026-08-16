@@ -107,12 +107,5 @@ Abbreviations: 185
 
 ## Warnings and Errors
 
-Errors found: 8  
+Errors found: 0  
 Warnings found: 0  
-
-### Error Classes
-
-- 5x Function expected at
-- 1x unknown namespace `LeanRV64D.Defs`
-- 1x Lean exited with code 1
-- 1x Field projection operates on types of the form `C ...` where C is a constant. The expression

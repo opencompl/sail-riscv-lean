@@ -11,7 +11,7 @@ import LeanRV64D.Defs
 
 open Sail
 open ConcurrencyInterfaceV1
-open LeanRV64D.Defs
+open LeanRV64D
 
 def print_bits (_ : String) (_ : BitVec n) : Unit := ()
 def print_string (_ : String) (_ : String) : Unit := ()
